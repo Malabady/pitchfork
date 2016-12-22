@@ -171,7 +171,9 @@ legacy_blasr: ccache samtools cmake boost htslib gtest hdf5
 	$(MAKE) -C ports/pacbio/blasr blasr_VERSION=994e5fc10c2aee600ff83991d59a30213f89a3d2 ${RULE}
 
 # rules
-ifeq ($(origin HAVE_CCACHE),undefined)
+ifeq ($(origin USE_CCACHE),undefined)
+ccache: ;
+else ifeq ($(origin HAVE_CCACHE),undefined)
 ccache:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 else
@@ -241,14 +243,16 @@ else
 cmake: ;
 endif
 swig:
-	$(MAKE) -C ports/thirdparty/$@ ${RULE}
+	$(MAKE) -j1 -C ports/thirdparty/$@ ${RULE}
 hmmer:
-	$(MAKE) -C ports/thirdparty/$@ ${RULE}
+	$(MAKE) -j1 -C ports/thirdparty/$@ ${RULE}
 gmap:
-	$(MAKE) -C ports/thirdparty/$@ ${RULE}
+	$(MAKE) -j1 -C ports/thirdparty/$@ ${RULE}
 jre:
-	$(MAKE) -C ports/thirdparty/$@ ${RULE}
+	$(MAKE) -j1 -C ports/thirdparty/$@ ${RULE}
 sbt:
+	$(MAKE) -j1 -C ports/thirdparty/$@ ${RULE}
+libbzip2:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 
 openssl:
@@ -428,7 +432,7 @@ Cogent:
 smrtflow:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 trim_isoseq_polyA:
-	$(MAKE) -C ports/pacbio/$@ ${RULE}
+	$(MAKE) -j1 -C ports/pacbio/$@ ${RULE}
 #
 pysiv2:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
