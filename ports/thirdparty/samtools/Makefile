@@ -21,6 +21,7 @@ do-config: $(_WRKSRC)/config.log
 $(_WRKSRC)/config.log: | do-extract
 	(cd $(_WRKSRC) && \
          CFLAGS="-I$(_WRKSRC)/htslib-1.3 $(CFLAGS)" ./configure --prefix=$(PREFIX) \
+                     --without-ncursesw \
                      --with-htslib=$(_WRKSRC)/htslib-1.3.1) >& config.log || $(PFHOME)/bin/diewith config.log
 do-build: $(_WRKSRC)/samtools
 $(_WRKSRC)/samtools: | do-config
