@@ -1,14 +1,36 @@
+export VERBOSE=1
 ## What we use internally
 #PREFIX        = /opt/pacbio
 #WORKDIR       = /media/ssd_drive/pf/workspace
 #HAVE_CCACHE   = /opt/software/c/ccache/3.2.3/bin/ccache
 #HAVE_ZLIB     = /opt/software/z/zlib/1.2.8-cloudflare
-##             For OSX, ZLIB can be installed to /usr via xcode-select --install
-#HAVE_PYTHON   = /opt/python-2.7.9/bin/python
-#HAVE_OPENBLAS = /opt/software/o/openblas/0.2.14
-#HAVE_BOOST    = /opt/software/b/boost/1.58
-#HAVE_CMAKE    = /opt/software/c/cmake/3.2.2/bin/cmake
-#HAVE_HDF5     = /opt/software/h/hdf5-tools/1.8.12
+#
+bam2fastx_VERSION        = d2506c8cbf23eec5a0353af7bf912f707ba8f155
+bax2bam_VERSION          = 83c06bdb353ecad6655c0b1624660dedd43e25d9
+blasr_VERSION            = 5b30da0cf76257b5ec10623a3cd27fac4b8fbac3
+blasr_libcpp_VERSION     = 783fc68f680ffe30e5aa41c7a9a5da5db9d729f5
+daligner_VERSION         = 7c09c812051983ac269d01840a1e8e8b982a06f6
+damasker_VERSION         = 5726269b6e72d7388020b5f69748f0c34e384584
+dazzdb_VERSION           = 925dd7632e420568d8446d30b28d22dbf63b152e
+dextractor_VERSION       = 89726800346d0bed15d98dcc577f4c7733aab4b1
+falcon_kit_VERSION       = 3b90cca3af5435b2a3b11e5f529befe718191368
+falcon_polish_VERSION    = 94a92592aa2a1fa8c052495c2766d15e9b04ce94
+kineticsTools_VERSION    = e155989b06e8511366d974112efe7f12b5b83faa
+pbalign_VERSION          = 6350b46a66ca67ab3347901293f5e347dca0dbef
+pbcommand_VERSION        = 1fb4011d6a5a705992f3723740f48bc32061dd0c
+pbcore_VERSION           = f95d94e0bc2c6162849b3a15c46485d89c1c0cae
+pbcoretools_VERSION      = 84c0a93120c0d6cf6ea0b28f5a540b4fb93d9637
+pbdagcon_VERSION         = 9868e42ec057fb770d4a98d50203440925f570a9
+pbfalcon_VERSION         = 445930e073b9f230e319b320f6d707ba6aec9a7a
+pbreports_VERSION        = 3dd2c1e35eb20977a0f2a8f6c8ae4af1deec29d5
+pbsmrtpipe_VERSION       = 32a3624e913f7d4c12c78554a0d58c604ef1627c
+pbtranscript_VERSION     = 7dac953c85ff8b3043f224a1cfa1c4f386259f8d
+pypeFLOW_VERSION         = 3613c74506726b47af8da1f96725a03b8ee2330b
+unanimity_VERSION        = 390a42ef6366967b124b3888ab8cee2e6060ca02
+GenomicConsensus_VERSION = 68a90e051d1347c6fed41f54e5b1f3d9497a4f60
+pbcopper_VERSION         = 6899ec341350a09b45b066a1fd49ae160bc69dc8
+pblaa_VERSION            = 9219662a2bf79af3cad9f064ef3663c2a7f2deb6
+pbbam_VERSION            = 928605a86ac024aced821fe4a4bce0b43d5ee680
 #
 ## Contributed by @cwarden45 (with ccache, boost, and hdf5 installed via osx homebrew) 
 #PREFIX      = /opt/pacbio
@@ -18,3 +40,9 @@
 #HAVE_CCACHE = /usr/local/Cellar/ccache/3.2.3/bin/ccache
 #HAVE_BOOST  = /usr/local/Cellar/boost/1.60.0_1/include
 #HAVE_HDF5   = /usr/local/Cellar/hdf5/1.8.16_1
+##             For OSX, ZLIB can be installed to /usr via xcode-select --install
+#HAVE_PYTHON   = /opt/python-2.7.9/bin/python
+#HAVE_OPENBLAS = /opt/software/o/openblas/0.2.14
+#HAVE_BOOST    = /opt/software/b/boost/1.58
+#HAVE_CMAKE    = /opt/software/c/cmake/3.2.2/bin/cmake
+#HAVE_HDF5     = /opt/software/h/hdf5-tools/1.8.12
