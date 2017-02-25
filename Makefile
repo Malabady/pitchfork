@@ -23,7 +23,7 @@ default:
 ccache:           initialized.o
 openssl:          ccache
 zlib:             ccache
-boost:            ccache
+boost:            ccache zlib libbzip2
 ifeq ($(origin HAVE_PYTHON),undefined)
 python:           ccache zlib openssl ncurses readline
 else ifneq ($(origin HAVE_OPENSSL),undefined)

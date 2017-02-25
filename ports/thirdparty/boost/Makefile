@@ -28,7 +28,11 @@ do-build: $(STAGING)/$(_NAME)/lib/libboost_system.a
 $(STAGING)/$(_NAME)/lib/libboost_system.a: | do-config
 	(cd $(_WRKSRC) && \
          $(SED) -i -e "s|using gcc ;|using gcc : $(shell $(CXX) -dumpversion) : $(CXX) ;|" project-config.jam && \
-         ./bjam -s NO_BZIP2=1 \
+         ./bjam \
+                -sBZIP2_INCLUDE=$(PREFIX)/include \
+                -sBZIP2_LIBPATH=$(PREFIX)/lib \
+                -sZLIB_INCLUDE=$(PREFIX)/include \
+                -sZLIB_LIBPATH=$(PREFIX)/lib \
                 --stagedir=$(STAGING)/$(_NAME) \
                 stage) >& build.log || $(PFHOME)/bin/diewith build.log
 do-install: $(PREFIX)/var/pkg/$(_NAME)
