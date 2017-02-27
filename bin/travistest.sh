@@ -6,7 +6,7 @@
 set -ex
 
 bamSieve -h
-bax2bam -h
+#bax2bam -h
 blasr -h
 ccs -h
 dataset -h
