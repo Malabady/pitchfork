@@ -38,6 +38,7 @@ libpng:           ccache zlib
 hmmer:            ccache
 gmap:             ccache zlib
 sbt:              jre
+libbzip2:         ccache
 
 pip:              python
 cython:           pip ccache
@@ -142,7 +143,7 @@ pbcopper:         cmake boost zlib
 #
 pblaa:             htslib pbbam seqan unanimity
 ppa:               boost cmake pbbam htslib
-trim_isoseq_polyA: boost cmake
+trim_isoseq_polyA: boost cmake zlib libbzip2
 pysiv2:            fabric requests nose xmlbuilder pbsmrtpipe pbcoretools
 PacBioTestData:    pip
 

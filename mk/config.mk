@@ -30,6 +30,9 @@ DISTFILES  ?= $(PFHOME)/distfiles
 
 PIP         = $(PREFIX)/bin/pip --cache-dir $(PIP_CACHE)
 
+ifeq ($(shell test -x "$(HAVE_CMAKE)" && echo -n yes || true),yes)
+CMAKE = $(HAVE_CMAKE)
+endif
 
 ifneq ($(origin DEBUG),undefined)
     DEBUG=1

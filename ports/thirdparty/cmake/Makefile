@@ -8,10 +8,6 @@ _NAME   = cmake-3.4.1
 _URL    = https://cmake.org/files/v3.4
 _FILE   = $(_NAME).tar.gz
 _WRKSRC = $(WORKDIR)/$(_NAME)
-ifneq ($(OPSYS),Darwin)
-LDFLAGS += -static-libgcc -static-libstdc++
-export LDFLAGS
-endif
 
 # Local works
 do-fetch: $(_FILE)
@@ -19,7 +15,6 @@ $(_FILE):
 	$(PFHOME)/bin/pitchfork fetch --url $(_URL)/$@
 do-extract: $(_WRKSRC)
 $(_WRKSRC): | do-fetch
-	$(MD5SUM) -c MD5SUM || exit
 	tar zxf $(_FILE) -C $(WORKDIR)
 do-config: $(_WRKSRC)/Makefile
 $(_WRKSRC)/Makefile: | do-extract
