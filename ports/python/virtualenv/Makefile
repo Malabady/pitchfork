@@ -14,20 +14,20 @@ endif
 # Local works
 do-extract: $(_WRKSRC)/virtualenv.py
 $(_WRKSRC)/virtualenv.py: | do-fetch
-	$(MD5SUM) -c MD5SUM || exit
 	tar zxf $(_FILE) -C $(WORKDIR)
 do-fetch: $(_FILE)
 $(_FILE):
 	$(PFHOME)/bin/pitchfork fetch --url $(_URL)/$@
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-extract
+	$(PYTHON) --version 2>&1 | grep Anaconda \
+        && rsync -aKx $(shell dirname $(PYTHON))/../lib*/libpython* $(PREFIX)/lib/ \
+        || true
 	$(PYTHON) $(_WRKSRC)/virtualenv.py $(PREFIX)
-	rsync -aKx $(shell dirname $(PYTHON))/../lib/python2.7/pydoc* $(PREFIX)/lib/python2.7/
+	rsync -aKx $(shell dirname $(PYTHON))/../lib*/python2.7/pydoc* $(PREFIX)/lib/python2.7/
 	rsync -aKx $(shell dirname $(PYTHON))/../bin/pydoc* $(PREFIX)/bin/
 	cd $(PREFIX) && \
-        find lib/python*   include/python*   bin/pip*  bin/python* \
+        find lib/python*   include/python*   bin/python* \
              bin/activate* bin/easy_install* bin/wheel bin/pydoc* \
+	| grep -v /pip \
         | sort -r > $@
-ifeq ($(OPSYS),Darwin)
-	cp -a $(PYTHON) $(PREFIX)/bin/
-endif
