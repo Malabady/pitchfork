@@ -5,7 +5,6 @@
 . ${HOME}/local/setup-env.sh
 set -ex
 
-bamSieve -h
 blasr -h
 ccs -h
 dataset -h
