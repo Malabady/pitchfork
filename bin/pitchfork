@@ -283,9 +283,10 @@ def pitchfork(args):
                 try:
                     _out, _exit, _err = backticks('rm -f ./%s' % os.path.basename(_prefetch))
                     _out, _exit, _err = backticks('ln -sfn %s ./' % _prefetch)
-                    _out, _exit, _err = backticks('grep %s MD5SUM | md5sum -c -' % os.path.basename(_prefetch))
+                    _out, _exit, _err = backticks('grep %s MD5SUM | md5sum -c -' % os.path.basename(_prefetch), checked=True)
                     return
-                except:
+                except Exception:
+                    _out, _exit, _err = backticks('rm -f %s %s') % (_archive, _distfiles)
                     if os.path.exists(_prefetch):
                         os.remove(_prefetch)
                     raise
@@ -303,7 +304,7 @@ def pitchfork(args):
             if _exit == 0:
                 _fetch = 'wget'
             _out, _exit, _err = backticks('%s %s' % (_fetch, _url))
-            _out, _exit, _err = backticks('grep %s MD5SUM | md5sum -c -' % os.path.basename(_prefetch))
+            _out, _exit, _err = backticks('grep %s MD5SUM | md5sum -c -' % os.path.basename(_prefetch), checked=True)
             _out, _exit, _err = backticks('cp %s %s/%s' % (_archive, _distfiles, _prjname))
             return
 

@@ -44,6 +44,7 @@ hmmer:            ccache
 gmap:             ccache zlib
 sbt:              jre
 libbzip2:         ccache
+ngmlr:            init
 
 pip:              python
 cython:           pip ccache
@@ -147,8 +148,9 @@ pbtranscript:     scipy networkx pysam pbcore pbcommand pbcoretools pbdagcon hmm
 pbccs:            unanimity
 unanimity:        boost swig cmake htslib pbbam seqan pbcopper numpy
 pbcopper:         cmake boost zlib
+pbsv:             ngmlr pysam libbzip2
+pblaa:            htslib pbbam seqan unanimity
 #
-pblaa:             htslib pbbam seqan unanimity
 ppa:               boost cmake pbbam htslib
 trim_isoseq_polyA: boost cmake zlib libbzip2
 pysiv2:            fabric requests nose xmlbuilder pbsmrtpipe pbcoretools
@@ -224,6 +226,8 @@ jre:
 sbt:
 	$(MAKE) -j1 -C ports/thirdparty/$@ ${RULE}
 libbzip2:
+	$(MAKE) -C ports/thirdparty/$@ ${RULE}
+ngmlr:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 
 openssl:
@@ -389,6 +393,8 @@ pbtranscript:
 unanimity:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 pbcopper:
+	$(MAKE) -C ports/pacbio/$@ ${RULE}
+pbsv:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 #
 pblaa:

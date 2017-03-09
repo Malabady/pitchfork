@@ -1,7 +1,7 @@
 include ../../../mk/pitchfork.mk
 
 # Local variables
-_NAME             = pbtranscript
+_NAME             = pbsv
 $(_NAME)_REPO    ?= git://github.com/PacificBiosciences/$(_NAME)
 _WRKSRC           = $(WORKDIR)/$(_NAME)
 $(_NAME)_VERSION ?= HEAD
@@ -25,11 +25,6 @@ $(PREFIX)/var/pkg/$(_NAME): | do-fetch
 	@echo "# $(_REVISION)" >> $@ 
 do-clean:
 do-distclean:
-	cd $(_WRKSRC) && $(GIT) clean -xdf
+	test -d $(_WRKSRC) && cd $(_WRKSRC) && $(GIT) clean -xdf || true
 do-flush:
 	rm -rf $(_WRKSRC)
-do-test: do-unit-test do-cram-test
-do-unit-test:
-	nosetests --verbose --with-xunit --xunit-file=pbtranscript_nose.xml $(_WRKSRC)/tests/unit/*.py || true
-do-cram-test:
-	run_cram_unit.py -x pbtranscript_cram.xml $(_WRKSRC)/tests/cram || true
