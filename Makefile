@@ -162,7 +162,7 @@ PacBioTestData:    pip
 reseq-core: \
        pbsmrtpipe pbalign blasr pbreports GenomicConsensus pbbam pbcoretools unanimity
 isoseq-core: \
-       reseq-core pbtranscript trim_isoseq_polyA hmmer gmap biopython cram nose
+       reseq-core pbtranscript trim_isoseq_polyA hmmer gmap biopython cram nose ipython
 world: \
        reseq-core  pbfalcon  kineticsTools \
        isoseq-core ssw_lib   mash          \

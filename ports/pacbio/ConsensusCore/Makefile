@@ -28,9 +28,9 @@ $(_WRKSRC)/make/Config.mk: | do-fetch
             --numpy-include=$(PREFIX)/lib/python2.7/site-packages/numpy/core/include
 do-build: $(_WRKSRC)/build/C++/libConsensusCore.a $(_WRKSRC)/build/Python/_ConsensusCore.so
 $(_WRKSRC)/build/C++/libConsensusCore.a: | do-config
-	$(MAKE) -C $(_WRKSRC) lib
+	$(MAKE) -C $(_WRKSRC) GXX="$(CXX) $(CXXFLAGS) $(LDFLAGS)" lib
 $(_WRKSRC)/build/Python/_ConsensusCore.so: | do-config
-	$(MAKE) -C $(_WRKSRC) python
+	$(MAKE) -C $(_WRKSRC) GXX="$(CXX) $(CXXFLAGS) $(LDFLAGS)" python
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	$(PIP) install --no-deps --install-option="--swig=$(PREFIX)/bin/swig" --install-option="--swig-lib=$(PREFIX)/share/swig/3.0.8" --install-option="--boost=$(BOOST_ROOT)/include" $(DEVOPT) $(_WRKSRC)/
