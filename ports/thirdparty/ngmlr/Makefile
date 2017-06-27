@@ -2,7 +2,7 @@ include ../../../mk/pitchfork.mk
 
 # Local variables
 _NAME    = ngmlr
-_VERSION = 0.2.2
+_VERSION = 0.2.4
 _URL     = https://github.com/philres/ngmlr/releases/download/v$(_VERSION)/
 _FILE    = ngmlr-$(_VERSION)-beta-linux-x86_64.tar.gz
 _WRKSRC  = $(WORKDIR)/$(_NAME)

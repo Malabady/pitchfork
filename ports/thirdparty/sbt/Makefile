@@ -13,7 +13,7 @@ do-fetch: $(_FILE)
 $(_FILE):
 	$(PFHOME)/bin/pitchfork fetch --url $(_URL)/$@
 do-install: $(PREFIX)/var/pkg/$(_NAME)
-$(PREFIX)/var/pkg/$(_NAME): | do-build
+$(PREFIX)/var/pkg/$(_NAME): | do-extract
 	rm -rf $(STAGING)/$(_NAME)
 	mkdir -p $(STAGING)/$(_NAME)
 	tar zxf $(_FILE) -C $(STAGING)/$(_NAME)/

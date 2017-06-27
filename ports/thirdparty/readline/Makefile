@@ -21,8 +21,8 @@ do-config: $(_WRKSRC)/config.log
 $(_WRKSRC)/config.log: | do-extract
 	(cd $(_WRKSRC) && CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure --prefix=$(PREFIX)) >& \
         config.log || $(PFHOME)/bin/diewith condig.log
-do-build: $(_WRKSRC)/libreadline.$(DYLIB)
-$(_WRKSRC)/libreadline.$(DYLIB): | do-config
+do-build: $(_WRKSRC)/libreadline.a
+$(_WRKSRC)/libreadline.a: | do-config
 	$(MAKE) SHLIB_LIBS=$(PREFIX)/lib/libncurses.$(DYLIB) -C $(_WRKSRC) >& build.log || $(PFHOME)/bin/diewith build.log
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

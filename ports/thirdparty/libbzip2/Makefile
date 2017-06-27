@@ -15,8 +15,8 @@ $(_WRKSRC): | do-fetch
 do-fetch: $(_FILE)
 $(_FILE):
 	$(PFHOME)/bin/pitchfork fetch --url $(_URL)/$@
-do-build: $(_WRKSRC)/libbz2.so
-$(_WRKSRC)/libbz2.so: | do-extract
+do-build: $(_WRKSRC)/libbz2.$(DYLIB).$(_VERSION)
+$(_WRKSRC)/libbz2.$(DYLIB).$(_VERSION): | do-extract
 	$(MAKE) -C $(_WRKSRC) -f Makefile-libbz2_so >& build.log || $(PFHOME)/bin/diewith build.log
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

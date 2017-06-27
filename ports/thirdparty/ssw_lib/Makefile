@@ -11,7 +11,7 @@ do-fetch: $(_WRKSRC)
 $(_WRKSRC):
 	$(GIT) clone $($(_NAME)_REPO) $@
 	cd $(_WRKSRC) && $(GIT) checkout $($(_NAME)_VERSION)
-do-build:
+do-build: | do-fetch
 	$(MAKE) -C $(_WRKSRC)/src CC="$(CC) $(CFLAGS) $(LDFLAGS)" CXX="$(CXX) $(CXXFLAGS) $(LDFLAGS)"
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

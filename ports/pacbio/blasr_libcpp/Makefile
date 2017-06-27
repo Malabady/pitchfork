@@ -21,7 +21,7 @@ else
 	ln -sfn $($(_NAME)_REPO) $(_WRKSRC)
 endif
 do-config: $(_WRKSRC)/defines.mk
-$(_WRKSRC)/defines.mk: | do-extract
+$(_WRKSRC)/defines.mk: | do-fetch
 	cd $(_WRKSRC) && \
         $(SYSPYTHON) configure.py \
             PREFIX=$(PREFIX) \
@@ -32,7 +32,8 @@ $(_WRKSRC)/defines.mk: | do-extract
          BOOST_INC=$(BOOST_ROOT)/include \
         HTSLIB_INC=$(PREFIX)/src/htslib/include \
         HTSLIB_LIB=$(PREFIX)/src/htslib/lib
-do-build:
+do-build: $(_WRKSRC)/alignment/libblasr.$(DYLIB)
+$(_WRKSRC)/alignment/libblasr.$(DYLIB): | do-config
 	$(MAKE) -C $(_WRKSRC) libpbdata LDLIBS=-lpbbam
 	$(MAKE) -C $(_WRKSRC) libpbihdf
 	$(MAKE) -C $(_WRKSRC) libblasr

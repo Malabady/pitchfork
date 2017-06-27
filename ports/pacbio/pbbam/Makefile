@@ -36,7 +36,8 @@ $(_WRKSRC)/build/Makefile: | do-fetch
             -DCMAKE_BUILD_TYPE=RelWithDebInfo \
             -DCMAKE_SKIP_BUILD_RPATH=FALSE \
             ..
-do-build:
+do-build: $(_WRKSRC)/build/lib/libpbbam.$(DYLIB)
+$(_WRKSRC)/build/lib/libpbbam.$(DYLIB): | do-config
 	$(MAKE) -C $(_WRKSRC)/build
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

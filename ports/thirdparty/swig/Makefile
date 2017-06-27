@@ -38,7 +38,8 @@ $(_WRKSRC)/config.log: | do-extract
             --without-tcl \
             --without-r \
         2>&1) >> config.log || $(PFHOME)/bin/diewith config.log
-do-build:
+do-build: $(_WRKSRC)/swig
+$(_WRKSRC)/swig: | do-config
 	$(MAKE) -C $(_WRKSRC) >& build.log || $(PFHOME)/bin/diewith build.log
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

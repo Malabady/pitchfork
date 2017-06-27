@@ -18,13 +18,15 @@ else
 	ln -sfn $($(_NAME)_REPO) $(_WRKSRC)
 INSTALL_RULE:=symlink
 endif
-do-config:
+do-config: $(_WRKSRC)/build/Makefile
+$(_WRKSRC)/build/Makefile: | do-fetch
 	mkdir -p $(_WRKSRC)/build
 	echo PREFIX:=$(PREFIX) > $(_WRKSRC)/build/Makefile
 	echo CC:=$(CC) >> $(_WRKSRC)/build/Makefile
 	echo LIBDIRS:=$(PREFIX)/lib >> $(_WRKSRC)/build/Makefile
 	echo include ../GNUmakefile >> $(_WRKSRC)/build/Makefile
-do-build:
+do-build: $(_WRKSRC)/build/dexta
+$(_WRKSRC)/build/dexta: | do-config
 	$(MAKE) -C $(_WRKSRC)/build
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

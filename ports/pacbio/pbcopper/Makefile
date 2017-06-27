@@ -29,7 +29,8 @@ $(_WRKSRC)/_build/Makefile: | do-fetch
           -DZLIB_LIBRARIES=$(PREFIX)/lib/libz.${DYLIB} \
           -DBoost_INCLUDE_DIRS=$(BOOST_ROOT)/include \
         ..
-do-build:
+do-build: $(_WRKSRC)/_build/lib/libpbcopper.a
+$(_WRKSRC)/_build/lib/libpbcopper.a: | do-config
 	cd $(_WRKSRC)/_build && $(MAKE)
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

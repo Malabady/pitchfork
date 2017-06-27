@@ -131,7 +131,7 @@ pbh5tools:        h5py pbcore
 pbbarcode:        pbh5tools pbcore numpy h5py
 pbcoretools:      pbcore pbcommand
 pbcommand:        xmlbuilder jsonschema avro requests iso8601 numpy tabulate pytz
-pbsmrtpipe:       pbcommand jinja2 networkx pbcore pbcommand pyparsing pydot jsonschema xmlbuilder requests fabric nose
+pbsmrtpipe:       pbcommand jinja2 networkx pbcore pbcommand pyparsing pydot jsonschema xmlbuilder requests nose
 falcon_kit:       networkx daligner dazzdb damasker pbdagcon pypeFLOW
 FALCON_unzip:     falcon_kit
 falcon_polish:    falcon_kit blasr GenomicConsensus pbcoretools dextractor bam2fastx pbalign
@@ -148,7 +148,8 @@ pbtranscript:     scipy networkx pysam pbcore pbcommand pbcoretools pbdagcon hmm
 pbccs:            unanimity
 unanimity:        boost swig cmake htslib pbbam seqan pbcopper numpy
 pbcopper:         cmake boost zlib
-pbsv:             ngmlr pysam libbzip2
+pbsv:             ngmlr pysam libbzip2 pbcore
+pbsvtools:        pbsv pbcommand pbcoretools
 pblaa:            htslib pbbam seqan unanimity
 #
 ppa:               boost cmake pbbam htslib
@@ -163,10 +164,16 @@ reseq-core: \
        pbsmrtpipe pbalign blasr pbreports GenomicConsensus pbbam pbcoretools unanimity
 isoseq-core: \
        reseq-core pbtranscript trim_isoseq_polyA hmmer gmap biopython cram nose ipython
+pbsv-core: \
+       pbsv pbsvtoools nose
 world: \
        reseq-core  pbfalcon  kineticsTools \
        isoseq-core ssw_lib   mash          \
        ipython     cram      nose
+third-party: \
+    samtools h5py scipy ipython cram nose pysam networkx ngmlr gmap boost jsonschema swig jinja2 pyparsing pydot xmlbuilder requests fabric matplotlib iso8601 tabulate pytz hmmer avro
+hosted-thirdparty: \
+    dextractor damasker daligner dazzdb seqan htslib
 
 # rules
 ifeq ($(origin USE_CCACHE),undefined)
@@ -396,6 +403,8 @@ pbcopper:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 pbsv:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
+pbsvtools:
+	$(MAKE) -C ports/pacbio/$@ ${RULE}
 #
 pblaa:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
@@ -486,4 +495,4 @@ pbbamr:
 pbcommandr:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 
-.PHONY: ConsensusCore GenomicConsensus MarkupSafe appnope avro biopython blasr boost ccache cmake Cogent cram cycler cython dazzdb daligner damasker dextractor decorator default docopt ecdsa fabric gmap gmock gnureadline gtest hmmer htslib ipython isodate jsonschema kineticsTools libpng matplotlib modules ncurses networkx nim nose numpy openblas openssl paramiko pbalign pbbam unanimity pbchimera pbcommand pbcore pbcoretools pbdagcon pbfalcon pblaa pbreports pexpect pickleshare pip ppa ptyprocess pycrypto pydot pyparsing pypeFLOW pysam python pytz pyxb rdfextras rdflib readline requests samtools scipy seqan simplegeneric six swig tcl traitlets world xmlbuilder zlib pbh5tools tabulate pbbarcode
+.PHONY: ConsensusCore GenomicConsensus MarkupSafe appnope avro biopython blasr boost ccache cmake Cogent cram cycler cython dazzdb daligner damasker dextractor decorator default docopt ecdsa fabric gmap gmock gnureadline gtest hmmer htslib ipython isodate jsonschema kineticsTools libpng matplotlib modules ncurses networkx nim nose numpy openblas openssl paramiko pbalign pbbam unanimity pbchimera pbcommand pbcore pbcoretools pbdagcon pbfalcon pblaa pbreports pexpect pickleshare pip ppa ptyprocess pycrypto pydot pyparsing pypeFLOW pysam python pytz rdfextras rdflib readline requests samtools scipy seqan simplegeneric six swig tcl traitlets world xmlbuilder zlib pbh5tools tabulate pbbarcode

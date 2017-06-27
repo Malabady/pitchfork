@@ -43,7 +43,8 @@ $(_WRKSRC)/_build/Makefile: | do-fetch
           -Dpbcopper_INCLUDE_DIRS=$(PREFIX)/include \
           -Dpbcopper_LIBRARIES=$(PREFIX)/lib/libpbcopper.a \
         ..
-do-build:
+do-build: $(_WRKSRC)/_build/ccs
+$(_WRKSRC)/_build/ccs: | do-config
 	cd $(_WRKSRC)/_build && $(MAKE)
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

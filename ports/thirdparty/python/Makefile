@@ -10,7 +10,7 @@ _CONFIGURE_ARGS += --enable-unicode=ucs4
 _CONFIGURE_ARGS += --enable-shared
 _CFLAGS          = $(CFLAGS)
 _CFLAGS         += -I$(PREFIX)/include/ncurses
-_LDFLAGS         = -L$(PREFIX)/lib
+_LDFLAGS         = -L$(PREFIX)/lib -Wl,-rpath,'\$$\$$ORIGIN/../lib'
 
 # Local works
 do-fetch: $(_FILE)
@@ -26,8 +26,8 @@ $(_WRKSRC)/config.log: | do-extract
 	(cd $(_WRKSRC) && \
           CFLAGS="$(_CFLAGS)" LDFLAGS="$(_LDFLAGS)" \
               ./configure $(_CONFIGURE_ARGS)) >& config.log || $(PFHOME)/bin/diewith config.log
-do-build: $(_WRKSRC)/python.exe
-$(_WRKSRC)/python.exe: | do-config
+do-build: $(_WRKSRC)/libpython2.7.$(DYLIB)
+$(_WRKSRC)/libpython2.7.$(DYLIB): | do-config
 	$(MAKE) -C $(_WRKSRC) >& build.log || $(PFHOME)/bin/diewith build.log
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

@@ -31,6 +31,7 @@ else
 PacBioBAM_LIBRARIES = $(PREFIX)/lib/libpbbam.a
 endif
 do-config: $(_WRKSRC)/build/Makefile
+ifeq ($(USE_CCACHE),true)
 $(_WRKSRC)/build/Makefile: | do-fetch
 	mkdir -p $(_WRKSRC)/build
 	cd $(_WRKSRC)/build \
@@ -47,7 +48,24 @@ $(_WRKSRC)/build/Makefile: | do-fetch
               -Dpbcopper_INCLUDE_DIRS=$(PREFIX)/include \
               -Dpbcopper_LIBRARIES=$(PREFIX)/lib/libpbcopper.a \
             ..
-do-build:
+else
+$(_WRKSRC)/build/Makefile: | do-fetch
+	mkdir -p $(_WRKSRC)/build
+	cd $(_WRKSRC)/build \
+     && $(CMAKE) \
+              -DBAM2FASTX_build_tests=OFF \
+              -DPacBioBAM_LIBRARIES=$(PacBioBAM_LIBRARIES) \
+              -DHTSLIB_INCLUDE_DIRS=$(PREFIX)/src/htslib/include \
+              -DHTSLIB_LIBRARIES=$(PREFIX)/src/htslib/lib/libhts.a \
+              -DBoost_INCLUDE_DIRS=$(BOOST_ROOT)/include \
+              -DZLIB_INCLUDE_DIRS=$(ZLIB_ROOT)/include \
+              -DZLIB_LIBRARIES=$(ZLIB_ROOT)/lib/libz.$(DYLIB) \
+              -Dpbcopper_INCLUDE_DIRS=$(PREFIX)/include \
+              -Dpbcopper_LIBRARIES=$(PREFIX)/lib/libpbcopper.a \
+            ..
+endif
+do-build: $(_WRKSRC)/build/bam2fastq
+$(_WRKSRC)/build/bam2fastq: | do-config
 	$(MAKE) VERBOSE=1 -C $(_WRKSRC)/build
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

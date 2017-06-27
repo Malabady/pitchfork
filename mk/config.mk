@@ -67,7 +67,6 @@ LDFLAGS   += -L$(PREFIX)/lib -L$(PREFIX)/lib64
 endif
 CXXFLAGS  += $(CFLAGS)
 
-
 BOOST_ROOT = $(PREFIX)
 HDF5_ROOT  = $(PREFIX)
 ZLIB_ROOT  = $(PREFIX)

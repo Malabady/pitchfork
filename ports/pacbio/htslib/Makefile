@@ -21,7 +21,8 @@ ifeq ($(wildcard $($(_NAME)_REPO)),)
 else
 	ln -sfn $($(_NAME)_REPO) $(_WRKSRC)
 endif
-do-build:
+do-build: $(_WRKSRC)/libhts.$(DYLIB)
+$(_WRKSRC)/libhts.$(DYLIB): | do-fetch
 	$(MAKE) -C $(_WRKSRC) \
                    CC=$(CC) \
             ZLIB_ROOT="$(ZLIB_ROOT)" \

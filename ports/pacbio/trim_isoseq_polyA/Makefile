@@ -32,7 +32,8 @@ $(_WRKSRC)/_build/Makefile: | do-fetch
               -DBZIP2_LIBRARIES=$(PREFIX)/lib/libbz2.so \
               -DBZIP2_INCLUDE_DIR=$(PREFIX)/include \
             ..
-do-build:
+do-build: $(_WRKSRC)/bin/trim_isoseq_polyA
+$(_WRKSRC)/bin/trim_isoseq_polyA: | do-config
 	$(MAKE) -C $(_WRKSRC)/_build
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

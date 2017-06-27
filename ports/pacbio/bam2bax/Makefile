@@ -30,7 +30,6 @@ CMAKE_LDFLAGS += -lpthread
 endif
 
 # Local works
-do-extract:
 do-fetch: $(_WRKSRC)
 $(_WRKSRC):
 ifeq ($(wildcard $($(_NAME)_REPO)),)
@@ -61,7 +60,7 @@ $(_WRKSRC)/build/Makefile: | do-fetch
               -DPBIHDF_LIBRARIES=$(PREFIX)/lib/libpbihdf.$(DYLIB) \
               -DPBDATA_LIBRARIES=$(PREFIX)/lib/libpbdata.$(DYLIB) \
         ..
-do-build:
+do-build: | do-config
 	$(MAKE) -C $(_WRKSRC)/build
 do-test-bam2bax:
 	$(MAKE) -C $(_WRKSRC)/build test

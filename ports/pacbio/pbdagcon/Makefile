@@ -45,7 +45,8 @@ $(_WRKSRC)/build/defines.mk: | do-fetch
                 GTEST_SRC=$(PREFIX)/src/gtest/src \
             GTEST_INCLUDE=$(PREFIX)/src/gtest/include \
         ./configure.py --build-dir=$(_WRKSRC)/build
-do-build:
+do-build: $(_WRKSRC)/build/src/cpp/pbdagcon
+$(_WRKSRC)/build/src/cpp/pbdagcon: | do-config
 	$(MAKE) -C $(_WRKSRC)/build
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build

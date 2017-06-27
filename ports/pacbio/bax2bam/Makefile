@@ -59,7 +59,7 @@ $(_WRKSRC)/build/Makefile: | do-fetch
               -DPBIHDF_LIBRARIES=$(PREFIX)/lib/libpbihdf.$(DYLIB) \
               -DPBDATA_LIBRARIES=$(PREFIX)/lib/libpbdata.$(DYLIB) \
         ..
-do-build:
+do-build: | do-config
 	$(MAKE) -C $(_WRKSRC)/build
 do-test-bax2bam:
 	$(MAKE) -C $(_WRKSRC)/build test

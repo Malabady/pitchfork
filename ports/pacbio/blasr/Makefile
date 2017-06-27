@@ -14,24 +14,17 @@ MAKE            := $(MAKE) DL_LIBFLAGS=''
 endif
 ifneq ($(wildcard $(PREFIX)/lib/libsz.so),)
 HDF5_LIBFLAGS = -lhdf5_cpp -lhdf5 -lsz
-CMAKE_LDFLAGS = -lsz
 else
 HDF5_LIBFLAGS = -lhdf5_cpp -lhdf5
-CMAKE_LDFLAGS =
 endif
 ifneq ($(wildcard $(PREFIX)/lib/libpbbam.$(DYLIB)),)
 PacBioBAM_LIBRARIES = $(PREFIX)/lib/libpbbam.$(DYLIB)
 else
 PacBioBAM_LIBRARIES = $(PREFIX)/lib/libpbbam.a
 endif
-ifeq ($(OPSYS),Darwin)
-else ifeq (,$(findstring /usr/lib/gcc,$(shell $(CC) -print-libgcc-file-name)))
-CMAKE_LDFLAGS += -lpthread
-endif
 
 # Local works
 ifeq ($(origin HAVE_BLASR),undefined)
-do-extract:
 do-fetch: $(_WRKSRC)
 $(_WRKSRC):
 ifeq ($(wildcard $($(_NAME)_REPO)),)
@@ -59,7 +52,8 @@ $(_WRKSRC)/defines.mk: | do-fetch
             PBBAM_LIB=$(PREFIX)/lib \
            HTSLIB_INC=$(PREFIX)/src/htslib/include \
            HTSLIB_LIB=$(PREFIX)/src/htslib/lib
-do-build:
+do-build: $(_WRKSRC)/blasr
+$(_WRKSRC)/blasr: | do-config
 ifneq ($(wildcard $(PREFIX)/lib/libsz.so),)
 	$(MAKE) -C $(_WRKSRC) blasr HDF5_LIBFLAGS="$(HDF5_LIBFLAGS)"
 	$(MAKE) -C $(_WRKSRC)/utils HDF5_LIBFLAGS="$(HDF5_LIBFLAGS)"
