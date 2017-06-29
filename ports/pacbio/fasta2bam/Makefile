@@ -34,6 +34,7 @@ $(_WRKSRC)/build/Makefile: | do-fetch
      && $(CMAKE) \
               -DCMAKE_C_COMPILER_LAUNCHER=ccache \
               -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+              -DPacBioBAM_INCLUDE_DIRS=$(PREFIX)/include \
               -DPacBioBAM_LIBRARIES=$(PacBioBAM_LIBRARIES) \
               -DHTSLIB_INCLUDE_DIRS=$(PREFIX)/src/htslib/include \
               -DHTSLIB_LIBRARIES=$(PREFIX)/src/htslib/lib/libhts.a \
@@ -46,6 +47,7 @@ $(_WRKSRC)/build/Makefile: | do-fetch
 	mkdir -p $(_WRKSRC)/build
 	cd $(_WRKSRC)/build \
      && $(CMAKE) \
+              -DPacBioBAM_INCLUDE_DIRS=$(PREFIX)/include \
               -DPacBioBAM_LIBRARIES=$(PacBioBAM_LIBRARIES) \
               -DHTSLIB_INCLUDE_DIRS=$(PREFIX)/src/htslib/include \
               -DHTSLIB_LIBRARIES=$(PREFIX)/src/htslib/lib/libhts.a \
@@ -54,7 +56,7 @@ $(_WRKSRC)/build/Makefile: | do-fetch
               -DZLIB_LIBRARIES=$(ZLIB_ROOT)/lib/libz.$(DYLIB) \
             ..
 endif
-do-build:
+do-build: do-config
 	$(MAKE) VERBOSE=1 -C $(_WRKSRC)/build
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
