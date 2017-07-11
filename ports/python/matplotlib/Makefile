@@ -1,7 +1,7 @@
 include ../../../mk/pitchfork.mk
 
 # Local variables
-_VER    = 1.4.3
+_VER    = 1.5.3
 _NAME   = matplotlib-$(_VER)
 _WRKSRC = $(WORKDIR)/$(_NAME)
 
