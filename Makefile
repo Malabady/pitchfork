@@ -163,13 +163,14 @@ PacBioTestData:    pip
 reseq-core: \
        pbsmrtpipe pbalign blasr pbreports GenomicConsensus pbbam pbcoretools unanimity
 isoseq-core: \
-       reseq-core pbtranscript trim_isoseq_polyA hmmer gmap biopython cram nose ipython
+       reseq-core pbtranscript hmmer gmap biopython cram nose ipython
 pbsv-core: \
        pbsv pbsvtoools nose
 world: \
        reseq-core  pbfalcon  kineticsTools \
        isoseq-core ssw_lib   mash          \
-       ipython     cram      nose
+       ipython     cram      nose          \
+       trim_isoseq_polyA
 third-party: \
     samtools h5py scipy ipython cram nose pysam networkx ngmlr gmap boost jsonschema swig jinja2 pyparsing pydot xmlbuilder requests fabric matplotlib iso8601 tabulate pytz hmmer avro
 hosted-thirdparty: \
