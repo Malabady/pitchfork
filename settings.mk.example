@@ -6,7 +6,7 @@ export VERBOSE=1
 #HAVE_ZLIB     = /opt/software/z/zlib/1.2.8-cloudflare
 #
 bam2fastx_VERSION        = smrtlink-5.0.0
-GenomicConsensus_VERSION = smrtlink-5.0.0
+GenomicConsensus_VERSION = 220fc836d58aefc7e3add3636bec798090432727
 pbcopper_VERSION         = smrtlink-5.0.0
 seqan_VERSION            = smrtlink-5.0.0
 unanimity_VERSION        = smrtlink-5.0.0
