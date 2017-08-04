@@ -300,7 +300,7 @@ def pitchfork(args):
                 _fetch = 'curl -k -L -O'
             elif 'wget' in _out[0]:
                 _fetch = 'wget'
-            _out, _exit, _err = backticks('lsb_release -d|grep "Ubuntu 12" && which wget')
+            _out, _exit, _err = backticks('lsb_release -d|grep -e "CentOS Linux release 7" -e "Ubuntu 12" && which wget')
             if _exit == 0:
                 _fetch = 'wget'
             _out, _exit, _err = backticks('%s %s' % (_fetch, _url))
