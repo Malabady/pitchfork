@@ -2,6 +2,8 @@
 type module >& /dev/null \
 || . /mnt/software/Modules/current/init/bash
 
+rm -rf $HOME/.local/lib/python2.7
+unset PYTHONUSERBASE
 module load gcc/4.9.2
 module load graphviz/2.28.0
 module load ccache/3.2.3
