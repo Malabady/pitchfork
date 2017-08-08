@@ -27,7 +27,7 @@ CCACHE_DIR ?= $(PFHOME)/.git/ccache
 SCCACHE_DIR?= $(PFHOME)/.git/sccache
 PIP_CACHE  ?= $(PFHOME)/.git/pip
 DISTFILES  ?= $(PFHOME)/distfiles
-CCACHE_BASEDIR := $(PFHOME)
+CCACHE_BASEDIR := $(WORKDIR)
 
 ifeq ($(origin HAVE_PYTHON),undefined)
 PIP         = $(PREFIX)/bin/pip --cache-dir $(PIP_CACHE)
