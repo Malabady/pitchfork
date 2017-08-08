@@ -350,7 +350,7 @@ bax2bam:
 bam2bax:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 htslib:
-	$(MAKE) -C ports/pacbio/$@ ${RULE}
+	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 seqan:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 pbbam:
