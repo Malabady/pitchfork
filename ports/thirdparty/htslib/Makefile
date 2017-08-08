@@ -4,7 +4,7 @@ include ../../../mk/pitchfork.mk
 _NAME    = htslib
 _VERSION = 1.4.1
 _FILE    = $(_NAME)-$(_VERSION).tar.bz2
-_URL     = https://github.com/samtools/htslib/releases/download/$(_VERSION)/$(_FILE)
+_URL     = https://github.com/samtools/htslib/releases/download/$(_VERSION)
 _WRKSRC  = $(WORKDIR)/$(_NAME)-$(_VERSION)
 ifneq ($(OPSYS),Darwin)
 LDFLAGS += -Wl,-rpath,'\$$\$$ORIGIN/../lib'
@@ -19,15 +19,19 @@ $(_WRKSRC): | do-fetch
 do-fetch: $(_FILE)
 $(_FILE):
 	$(PFHOME)/bin/pitchfork fetch --url $(_URL)/$@
+do-config: $(_WRKSRC)/config.mk
+$(_WRKSRC)/config.mk: | do-extract
+	cd $(_WRKSRC) && \
+           CFLAGS="$(CFLAGS) -Wall -O2 -Wno-unused-function" \
+          LDFLAGS="$(LDFLAGS)" \
+               CC="$(CC)" \
+        ZLIB_ROOT="$(ZLIB_ROOT)" \
+        ./configure --prefix=$(PREFIX) \
+                    --disable-gcs --disable-s3 --disable-libcurl --disable-bz2 --disable-lzma \
+        >& config.log || $(PFHOME)/bin/diewith config.log
 do-build: $(_WRKSRC)/libhts.$(DYLIB)
-$(_WRKSRC)/libhts.$(DYLIB): | do-extract
-	$(MAKE) -C $(_WRKSRC) \
-                   CC=$(CC) \
-            ZLIB_ROOT="$(ZLIB_ROOT)" \
-               CFLAGS="$(CFLAGS) -Wall -O2 -Wno-unused-function" \
-              LDFLAGS="$(LDFLAGS)" \
-      PACKAGE_VERSION="1.1" \
-	>& build.log || $(PFHOME)/bin/diewith build.log
+$(_WRKSRC)/libhts.$(DYLIB): | do-config
+	$(MAKE) -C $(_WRKSRC) >& build.log || $(PFHOME)/bin/diewith build.log
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	mkdir -p $(PREFIX)/src/htslib/lib
