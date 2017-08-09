@@ -172,7 +172,7 @@ world: \
        ipython     cram      nose          \
        trim_isoseq_polyA
 third-party: \
-    samtools h5py scipy ipython cram nose pysam networkx ngmlr gmap boost jsonschema swig jinja2 pyparsing pydot xmlbuilder requests fabric matplotlib iso8601 tabulate pytz hmmer avro
+    samtools h5py scipy ipython cram nose pysam networkx ngmlr gmap boost jsonschema swig jinja2 pyparsing pydot xmlbuilder requests fabric matplotlib iso8601 tabulate pytz hmmer avro htslib
 hosted-thirdparty: \
     dextractor damasker daligner dazzdb seqan htslib
 
@@ -350,7 +350,7 @@ bax2bam:
 bam2bax:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 htslib:
-	$(MAKE) -C ports/pacbio/$@ ${RULE}
+	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 seqan:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 pbbam:
