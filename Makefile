@@ -25,7 +25,7 @@ openssl:          ccache
 zlib:             ccache
 boost:            ccache zlib libbzip2
 ifeq ($(origin HAVE_PYTHON),undefined)
-python:           ccache zlib openssl ncurses readline
+python:           ccache zlib openssl ncurses readline libbzip2
 else ifneq ($(origin HAVE_OPENSSL),undefined)
 python:           openssl
 else ifneq ($(origin HAVE_LIBSSL),undefined)
