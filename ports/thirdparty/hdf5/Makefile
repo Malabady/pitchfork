@@ -33,9 +33,9 @@ do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rm -rf $(STAGING)/$(_NAME)
 	$(MAKE) -C $(_WRKSRC) install >& install.log || $(PFHOME)/bin/diewith install.log
-	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	mkdir -p $(STAGING)/$(_NAME)/lib/pkgconfig
 	$(SED) -e "s@^prefix=.*@prefix=$(PREFIX)@" hdf5.pc > $(STAGING)/$(_NAME)/lib/pkgconfig/hdf5.pc
+	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
 else
 _HDF5 = $(shell ../../../bin/checkHDF5 $(HAVE_HDF5))
