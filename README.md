@@ -1,4 +1,4 @@
-# Pitchfork [![Build Status](https://travis-ci.org/PacificBiosciences/pitchfork.svg)](https://travis-ci.org/PacificBiosciences/pitchfork)
+# Pitchfork
 Pitchfork is a collection of proof-of-concept building scripts for building pacbio software from the github projects using a dumb Makefile file to describe the software component dependencies. This is an unofficial, pedantic way to build software from pacbio's github projects. If you just need to access to pacbio's software distribution, and don't want to go the hard path, please ask for assistance from pacbio tech support at http://www.pacb.com/support/ .
 
     echo PREFIX=/opt/mybuild > settings.mk
