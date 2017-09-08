@@ -486,14 +486,5 @@ test-falcon_polish: falcon_polish nose
 samtools-0.1.20:         ccache zlib ncurses
 samtools-0.1.20:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
-# R (experimental)
-Rcpp:   ccache
-pbbamr: Rcpp zlib
-Rcpp:
-	$(MAKE) -C ports/R/$@ ${RULE}
-pbbamr:
-	$(MAKE) -C ports/pacbio/$@ ${RULE}
-pbcommandr:
-	$(MAKE) -C ports/pacbio/$@ ${RULE}
 
 .PHONY: ConsensusCore GenomicConsensus MarkupSafe appnope avro biopython blasr boost ccache cmake Cogent cram cycler cython dazzdb daligner damasker dextractor decorator default docopt ecdsa fabric gmap gmock gnureadline gtest hmmer htslib ipython isodate jsonschema kineticsTools libpng matplotlib modules ncurses networkx nim nose numpy openblas openssl paramiko pbalign pbbam unanimity pbchimera pbcommand pbcore pbcoretools pbdagcon pbfalcon pblaa pbreports pexpect pickleshare pip ppa ptyprocess pycrypto pydot pyparsing pypeFLOW pysam python pytz rdfextras rdflib readline requests samtools scipy seqan simplegeneric six swig tcl traitlets world xmlbuilder zlib pbh5tools tabulate pbbarcode
