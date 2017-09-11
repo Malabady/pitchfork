@@ -42,6 +42,8 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
         else \
            exit 1; \
         fi
+	mkdir -p $(STAGING)/$(_NAME)/lib/pkgconfig
+	$(SED) -e "s@^prefix=.*@prefix=$(PREFIX)@" ncurses.pc > $(STAGING)/$(_NAME)/lib/pkgconfig/ncurses.pc
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
 else
@@ -51,7 +53,7 @@ do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME):
 	rm -rf $(STAGING)/$(_NAME)
 	mkdir -p $(STAGING)/$(_NAME)/include
-	mkdir -p $(STAGING)/$(_NAME)/lib
+	mkdir -p $(STAGING)/$(_NAME)/lib/pkgconfig
 	mkdir -p $(STAGING)/$(_NAME)/share
 	cp -aL $(_NCURSES)/include/ncurses $(STAGING)/$(_NAME)/include/
 	find $(_NCURSES)/lib -maxdepth 1 \
@@ -63,6 +65,7 @@ $(PREFIX)/var/pkg/$(_NAME):
              -o -name 'terminfo'            \
              \) -exec cp -aL {} $(STAGING)/$(_NAME)/lib/ \;
 	cp -aL $(_NCURSES)/share/terminfo $(STAGING)/$(_NAME)/share/
+	$(SED) -e "s@^prefix=.*@prefix=$(PREFIX)@" ncurses.pc > $(STAGING)/$(_NAME)/lib/pkgconfig/ncurses.pc
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
 endif

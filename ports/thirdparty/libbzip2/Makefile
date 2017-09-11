@@ -21,23 +21,25 @@ $(_WRKSRC)/libbz2.$(DYLIB).$(_VERSION): | do-extract
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rm -rf $(STAGING)/$(_NAME)
-	mkdir -p $(STAGING)/$(_NAME)/lib $(STAGING)/$(_NAME)/include $(STAGING)/$(_NAME)/bin
+	mkdir -p $(STAGING)/$(_NAME)/lib/pkgconfig $(STAGING)/$(_NAME)/include $(STAGING)/$(_NAME)/bin
 	cp -aL $(_WRKSRC)/bzip2-shared $(STAGING)/$(_NAME)/bin/bzip2
 	cp -aL $(_WRKSRC)/bzlib.h $(STAGING)/$(_NAME)/include
 	cp -aL $(_WRKSRC)/libbz2.* $(STAGING)/$(_NAME)/lib
 	ln -sfn libbz2.$(DYLIB).1.0 $(STAGING)/$(_NAME)/lib/libbz2.$(DYLIB).1
 	ln -sfn libbz2.$(DYLIB).1   $(STAGING)/$(_NAME)/lib/libbz2.$(DYLIB)
+	$(SED) -e "s@^prefix=.*@prefix=$(PREFIX)@" bzip2.pc > $(STAGING)/$(_NAME)/lib/pkgconfig/bzip2.pc
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
 else
 do-install:
 	rm -rf $(STAGING)/$(_NAME)
-	mkdir -p $(STAGING)/$(_NAME)/lib $(STAGING)/$(_NAME)/include $(STAGING)/$(_NAME)/bin
+	mkdir -p $(STAGING)/$(_NAME)/lib/pkgconfig $(STAGING)/$(_NAME)/include $(STAGING)/$(_NAME)/bin
 	cp -aL $(HAVE_LIBBZIP2)/bin/bzip2 $(STAGING)/$(_NAME)/bin/
 	cp -aL $(HAVE_LIBBZIP2)/include/bzlib.h $(STAGING)/$(_NAME)/include
 	cp -aL $(HAVE_LIBBZIP2)/lib/libbz2.* $(STAGING)/$(_NAME)/lib
 	ln -sfn libbz2.$(DYLIB).1.0 $(STAGING)/$(_NAME)/lib/libbz2.$(DYLIB).1
 	ln -sfn libbz2.$(DYLIB).1   $(STAGING)/$(_NAME)/lib/libbz2.$(DYLIB)
+	$(SED) -e "s@^prefix=.*@prefix=$(PREFIX)@" bzip2.pc > $(STAGING)/$(_NAME)/lib/pkgconfig/bzip2.pc
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $(PREFIX)/var/pkg/$(_NAME)
 endif

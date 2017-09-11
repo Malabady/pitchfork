@@ -23,7 +23,7 @@ def backticks(cmd, merge_stderr=True, checked=False):
     Returns ( command output as sequence of strings, error code, error message )
     """
     if VERBOSE:
-        print "`{}`".format(cmd)
+        print "`{0}`".format(cmd)
     if merge_stderr:
         _stderr = subprocess.STDOUT
     else:
@@ -51,7 +51,7 @@ def backticks(cmd, merge_stderr=True, checked=False):
         output = out
 
     if checked and errCode:
-        raise Exception('{} <- `{}`\n\t{}'.format(
+        raise Exception('{0} <- `{1}`\n\t{2}'.format(
             errCode, cmd, errorMessage))
     return output, errCode, errorMessage
 
