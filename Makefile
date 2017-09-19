@@ -145,6 +145,7 @@ ConsensusCore:    numpy boost swig cmake
 GenomicConsensus: pbcore pbcommand numpy h5py ConsensusCore unanimity
 smrtflow:         sbt
 pbtranscript:     scipy networkx pysam pbcore pbcommand pbcoretools pbdagcon hmmer blasr GenomicConsensus gmap
+pbtranscript2:     scipy networkx pysam pbcore pbcommand pbdagcon hmmer blasr GenomicConsensus gmap
 pbccs:            unanimity
 unanimity:        boost swig cmake htslib pbbam seqan pbcopper numpy
 pbcopper:         cmake boost zlib
@@ -397,6 +398,8 @@ pbalign:
 pbcoretools:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 pbtranscript:
+	$(MAKE) -C ports/pacbio/$@ ${RULE}
+pbtranscript2:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 unanimity:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
