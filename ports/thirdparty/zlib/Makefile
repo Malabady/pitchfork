@@ -30,14 +30,15 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 else
 _ZLIB = $(shell ../../../bin/checkZLIB $(HAVE_ZLIB))
 _NAME = zlib
-do-install:
+do-install: $(PREFIX)/var/pkg/$(_NAME)
+$(PREFIX)/var/pkg/$(_NAME):
 	rm -rf $(STAGING)/$(_NAME)
 	mkdir -p $(STAGING)/$(_NAME)/include
 	mkdir -p $(STAGING)/$(_NAME)/lib
 	cp -aL $(_ZLIB)/include/zlib.h $(_ZLIB)/include/zconf.h $(STAGING)/$(_NAME)/include/
 	cp -aL $(_ZLIB)/lib/libz.*                              $(STAGING)/$(_NAME)/lib/
 	mkdir -p $(STAGING)/$(_NAME)/lib/pkgconfig
-	find $(_ZLIB)/lib -name 'zlib.pc' -exec cp -aL {} $(STAGING)/$(_NAME)/lib/pkgconfig/ \;
+	$(SED) -e "s@^prefix=.*@prefix=$(PREFIX)@" $(_ZLIB)/lib/pkgconfig/zlib.pc > $(STAGING)/$(_NAME)/lib/pkgconfig/zlib.pc
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $(PREFIX)/var/pkg/$(_NAME)
 endif

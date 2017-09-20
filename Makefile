@@ -25,7 +25,7 @@ openssl:          ccache
 zlib:             ccache
 boost:            ccache zlib libbzip2
 ifeq ($(origin HAVE_PYTHON),undefined)
-python:           ccache zlib openssl ncurses readline
+python:           ccache zlib openssl ncurses readline libbzip2
 else ifneq ($(origin HAVE_OPENSSL),undefined)
 python:           openssl
 else ifneq ($(origin HAVE_LIBSSL),undefined)
@@ -145,6 +145,7 @@ ConsensusCore:    numpy boost swig cmake
 GenomicConsensus: pbcore pbcommand numpy h5py ConsensusCore unanimity
 smrtflow:         sbt
 pbtranscript:     scipy networkx pysam pbcore pbcommand pbcoretools pbdagcon hmmer blasr GenomicConsensus gmap
+pbtranscript2:    scipy networkx pysam hmmer gmap blasr pbcore GenomicConsensus pbdagcon
 pbccs:            unanimity
 unanimity:        boost swig cmake htslib pbbam seqan pbcopper numpy
 pbcopper:         cmake boost zlib
@@ -398,6 +399,8 @@ pbcoretools:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 pbtranscript:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
+pbtranscript2:
+	$(MAKE) -C ports/pacbio/$@ ${RULE}
 unanimity:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 pbcopper:
@@ -486,14 +489,5 @@ test-falcon_polish: falcon_polish nose
 samtools-0.1.20:         ccache zlib ncurses
 samtools-0.1.20:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
-# R (experimental)
-Rcpp:   ccache
-pbbamr: Rcpp zlib
-Rcpp:
-	$(MAKE) -C ports/R/$@ ${RULE}
-pbbamr:
-	$(MAKE) -C ports/pacbio/$@ ${RULE}
-pbcommandr:
-	$(MAKE) -C ports/pacbio/$@ ${RULE}
 
 .PHONY: ConsensusCore GenomicConsensus MarkupSafe appnope avro biopython blasr boost ccache cmake Cogent cram cycler cython dazzdb daligner damasker dextractor decorator default docopt ecdsa fabric gmap gmock gnureadline gtest hmmer htslib ipython isodate jsonschema kineticsTools libpng matplotlib modules ncurses networkx nim nose numpy openblas openssl paramiko pbalign pbbam unanimity pbchimera pbcommand pbcore pbcoretools pbdagcon pbfalcon pblaa pbreports pexpect pickleshare pip ppa ptyprocess pycrypto pydot pyparsing pypeFLOW pysam python pytz rdfextras rdflib readline requests samtools scipy seqan simplegeneric six swig tcl traitlets world xmlbuilder zlib pbh5tools tabulate pbbarcode

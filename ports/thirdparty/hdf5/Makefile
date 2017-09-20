@@ -33,12 +33,15 @@ do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rm -rf $(STAGING)/$(_NAME)
 	$(MAKE) -C $(_WRKSRC) install >& install.log || $(PFHOME)/bin/diewith install.log
+	mkdir -p $(STAGING)/$(_NAME)/lib/pkgconfig
+	$(SED) -e "s@^prefix=.*@prefix=$(PREFIX)@" hdf5.pc > $(STAGING)/$(_NAME)/lib/pkgconfig/hdf5.pc
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
 else
 _HDF5 = $(shell ../../../bin/checkHDF5 $(HAVE_HDF5))
 _NAME = hdf5
-do-install:
+do-install: $(PREFIX)/var/pkg/$(_NAME)
+$(PREFIX)/var/pkg/$(_NAME):
 	rm -rf $(STAGING)/$(_NAME)
 	mkdir -p $(STAGING)/$(_NAME)/include
 	mkdir -p $(STAGING)/$(_NAME)/lib
@@ -48,6 +51,8 @@ do-install:
 	cp -aL $(_HDF5)/bin/h5repack $(STAGING)/$(_NAME)/bin/
 	cp -aL $(_HDF5)/include/H5*.h $(_HDF5)/include/hdf5*.h $(STAGING)/$(_NAME)/include/
 	find $(_HDF5)/lib \( -name 'libhdf5*' -o -name 'libsz.*' \) -exec cp -aL {} $(STAGING)/$(_NAME)/lib/ \;
+	mkdir -p $(STAGING)/$(_NAME)/lib/pkgconfig
+	$(SED) -e "s@^prefix=.*@prefix=$(PREFIX)@" hdf5.pc > $(STAGING)/$(_NAME)/lib/pkgconfig/hdf5.pc
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $(PREFIX)/var/pkg/$(_NAME)
 endif
