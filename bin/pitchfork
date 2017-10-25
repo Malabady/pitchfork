@@ -300,10 +300,26 @@ def pitchfork(args):
                 _fetch = 'curl -k -L -O'
             elif 'wget' in _out[0]:
                 _fetch = 'wget'
-            _out, _exit, _err = backticks('lsb_release -d|grep -e "CentOS Linux release 7" -e "Ubuntu 12" && which wget')
-            if _exit == 0:
+            _out, _exit, _err = backticks('lsb_release -d')
+            if _exit != 0:
                 _fetch = 'wget'
+            if "CentOS Linux release 7." in _out[0]:
+                _fetch = 'wget'
+            elif "Ubuntu 12." in _out[0]:
+                from distutils.version import LooseVersion
+                _out, _exit, _err = backticks("dpkg --list|grep libssl1.0.0|awk '{print $3}'")
+                if _exit != 0:
+                    pass
+                elif LooseVersion("1.0.1-4ubuntu5.39") > LooseVersion(_out[0]):
+                    raise Exception("[ERROR] `apt-get install libssl1.0.0` to fix download issue.")
+                else:
+                    pass
+                _fetch = 'wget'
+            else:
+                pass
             _out, _exit, _err = backticks('%s %s' % (_fetch, _url))
+            if _exit != 0:
+                raise Exception("[ERROR] %s" % ''.join(_err))
             _out, _exit, _err = backticks('grep %s MD5SUM | md5sum -c -' % os.path.basename(_prefetch), checked=True)
             _out, _exit, _err = backticks('cp %s %s/%s' % (_archive, _distfiles, _prjname))
             return

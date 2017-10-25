@@ -13,7 +13,7 @@ case "$bamboo_repository_branch_name" in
     exit 0
     ;;
 esac
-NEXUS_BASEURL=http://nexus/repository
+NEXUS_BASEURL=http://ossnexus.pacificbiosciences.com/repository
 NEXUS_URL=$NEXUS_BASEURL/unsupported/pitchfork/gcc-6.4.0
 for mywhl in $(find pitchfork/.git/pip -name *whl); do
   curl -v -n --upload-file $mywhl \

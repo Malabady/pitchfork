@@ -45,6 +45,7 @@ gmap:             ccache zlib
 sbt:              jre
 libbzip2:         ccache
 ngmlr:            init
+minimap:          zlib
 
 pip:              python
 cython:           pip ccache
@@ -173,7 +174,7 @@ world: \
        ipython     cram      nose          \
        trim_isoseq_polyA
 third-party: \
-    samtools h5py scipy ipython cram nose pysam networkx ngmlr gmap boost jsonschema swig jinja2 pyparsing pydot xmlbuilder requests fabric matplotlib iso8601 tabulate pytz hmmer avro htslib
+    samtools h5py scipy ipython cram nose pysam networkx ngmlr gmap boost jsonschema swig jinja2 pyparsing pydot xmlbuilder requests fabric matplotlib iso8601 tabulate pytz hmmer avro htslib minimap
 hosted-thirdparty: \
     dextractor damasker daligner dazzdb seqan htslib
 
@@ -237,6 +238,8 @@ sbt:
 libbzip2:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 ngmlr:
+	$(MAKE) -C ports/thirdparty/$@ ${RULE}
+minimap:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 
 openssl:
