@@ -1,7 +1,7 @@
 include ../../../mk/pitchfork.mk
 
 # Local variables
-_NAME   = libressl-2.2.5
+_NAME   = libressl-2.5.5
 _URL    = http://ftp.openbsd.org/pub/OpenBSD/LibreSSL
 _WRKSRC = $(WORKDIR)/$(_NAME)
 _CFLAGS = $(CFLAGS)
