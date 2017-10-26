@@ -1,7 +1,7 @@
 include ../../../mk/pitchfork.mk
 
 # Local variables
-_NAME   = swig-3.0.8
+_NAME   = swig-3.0.12
 _URL    = https://prdownloads.sourceforge.net/swig
 _WRKSRC = $(WORKDIR)/$(_NAME)
 _FILE   = $(_NAME).tar.gz
