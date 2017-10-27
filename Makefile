@@ -100,7 +100,6 @@ CramUnit:         cram nose xmlbuilder
 # Not part of pacbio developers' software collection
 nim:          ccache zlib
 tcl:          ccache zlib
-modules:      ccache tcl
 ssw_lib:      ccache pip
 fasta2bam:    ccache pbbam htslib zlib boost cmake
 scikit-image: pip numpy decorator six networkx matplotlib pillow
@@ -436,8 +435,6 @@ pysiv2:
 # Not part of pacbio developers' software collection
 nim:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
-modules:
-	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 mash:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 ssw_lib:
@@ -488,9 +485,4 @@ test-bax2bam: bax2bam
 test-falcon_polish: falcon_polish nose
 	$(MAKE) -C ports/pacbio/falcon_polish do-test
 
-# extra testing section conflicts with other installation
-samtools-0.1.20:         ccache zlib ncurses
-samtools-0.1.20:
-	$(MAKE) -C ports/thirdparty/$@ ${RULE}
-
-.PHONY: ConsensusCore GenomicConsensus MarkupSafe appnope avro biopython blasr boost ccache cmake Cogent cram cycler cython dazzdb daligner damasker dextractor decorator default docopt ecdsa fabric gmap gmock gnureadline gtest hmmer htslib ipython isodate jsonschema kineticsTools libpng matplotlib modules ncurses networkx nim nose numpy openblas openssl paramiko pbalign pbbam unanimity pbchimera pbcommand pbcore pbcoretools pbdagcon pbfalcon pblaa pbreports pexpect pickleshare pip ppa ptyprocess pycrypto pydot pyparsing pypeFLOW pysam python pytz rdfextras rdflib readline requests samtools scipy seqan simplegeneric six swig tcl traitlets world xmlbuilder zlib pbh5tools tabulate pbbarcode
+.PHONY: ConsensusCore GenomicConsensus MarkupSafe appnope avro biopython blasr boost ccache cmake Cogent cram cycler cython dazzdb daligner damasker dextractor decorator default docopt ecdsa fabric gmap gmock gnureadline gtest hmmer htslib ipython isodate jsonschema kineticsTools libpng matplotlib ncurses networkx nim nose numpy openblas openssl paramiko pbalign pbbam unanimity pbchimera pbcommand pbcore pbcoretools pbdagcon pbfalcon pblaa pbreports pexpect pickleshare pip ppa ptyprocess pycrypto pydot pyparsing pypeFLOW pysam python pytz rdfextras rdflib readline requests samtools scipy seqan simplegeneric six swig tcl traitlets world xmlbuilder zlib pbh5tools tabulate pbbarcode
