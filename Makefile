@@ -99,7 +99,6 @@ CramUnit:         cram nose xmlbuilder
 
 # Not part of pacbio developers' software collection
 nim:          ccache zlib
-tcl:          ccache zlib
 ssw_lib:      ccache pip
 fasta2bam:    ccache pbbam htslib zlib boost cmake
 scikit-image: pip numpy decorator six networkx matplotlib pillow
@@ -188,15 +187,12 @@ ifeq ($(OPSYS),Darwin)
 HAVE_ZLIB ?=
 readline: ;
 ncurses: ;
-tcl: ;
 libpng: ;
 else
 readline:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 ncurses:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
-tcl:
-	$(MAKE) -j1 -C ports/thirdparty/$@ ${RULE}
 libpng:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 endif
