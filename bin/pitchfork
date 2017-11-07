@@ -2,7 +2,6 @@
 import sys
 import os
 from glob import glob
-import subprocess
 import _argparse as argparse
 
 __VERSION__ = '0.0.2'
@@ -22,6 +21,7 @@ def backticks(cmd, merge_stderr=True, checked=False):
     Simulates the perl backticks (``) command with error-handling support
     Returns ( command output as sequence of strings, error code, error message )
     """
+    import subprocess
     if VERBOSE:
         print ("`{0}`".format(cmd))
     if merge_stderr:
@@ -303,7 +303,9 @@ def pitchfork(args):
             _out, _exit, _err = backticks('lsb_release -d')
             if _exit != 0:
                 _fetch = 'wget'
-            if "CentOS Linux release 7." in _out[0]:
+            elif len(_out) < 1:
+                _fetch = 'wget'
+            elif "CentOS Linux release 7." in _out[0]:
                 _fetch = 'wget'
             elif "Ubuntu 12." in _out[0]:
                 from distutils.version import LooseVersion
