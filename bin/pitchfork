@@ -23,7 +23,7 @@ def backticks(cmd, merge_stderr=True, checked=False):
     Returns ( command output as sequence of strings, error code, error message )
     """
     if VERBOSE:
-        print "`{}`".format(cmd)
+        print ("`{0}`".format(cmd))
     if merge_stderr:
         _stderr = subprocess.STDOUT
     else:
@@ -151,12 +151,12 @@ def pitchfork(args):
         if not os.path.exists(os.path.dirname(_distfiles)):
             log("[ERROR] '%s' not found." % os.path.dirname(_distfiles))
             sys.exit(1)
-        print "# please copy following lines into your settings.mk file"
+        print ("# please copy following lines into your settings.mk file")
         if myargs['ccache']:
-            print "USE_CCACHE  = yes"
-        print "PREFIX      = %s" % _prefix
-        print "WORKDIR     = %s" % _workdir
-        print "DISTFILES   = %s" % _distfiles
+            print ("USE_CCACHE  = yes")
+        print ("PREFIX      = %s" % _prefix)
+        print ("WORKDIR     = %s" % _workdir)
+        print ("DISTFILES   = %s" % _distfiles)
         return
 
     _prefix = ''
@@ -181,12 +181,12 @@ def pitchfork(args):
     if args.subcommand == 'sconf':
         myargs = vars(args)
         if myargs['prefix']:
-            print _prefix
+            print (_prefix)
         return
 
     if args.subcommand == 'installed':
         for mypkg in glob('%s/var/pkg/*' % _prefix):
-            print os.path.basename(mypkg)
+            print (os.path.basename(mypkg))
         return
 
     if args.subcommand == 'uninstall':
@@ -206,7 +206,7 @@ def pitchfork(args):
             with open(mypath) as f:
                 content = f.readlines()
             if ' uninstall ' in content[0]:
-                print '%s/bin/pip uninstall -y %s' % (_prefix, content[0].strip().split(' ')[-1])
+                print ('%s/bin/pip uninstall -y %s' % (_prefix, content[0].strip().split(' ')[-1]))
                 _out, _exit, _err = backticks('%s/bin/pip uninstall -y %s' % (_prefix, content[0].strip().split(' ')[-1]))
             for myfile in content:
                 if myfile[0] == '#':
@@ -215,7 +215,7 @@ def pitchfork(args):
                 if os.path.islink(myfile) and os.path.isdir(myfile):
                     continue
                 if os.path.isfile(myfile) or os.path.islink(myfile):
-                    print 'rm -f %s' % myfile
+                    print ('rm -f %s' % myfile)
                     try:
                         os.remove(myfile)
                     except:
@@ -225,7 +225,7 @@ def pitchfork(args):
                     continue
                 myfile = '%s/%s' % (_prefix, myfile.strip())
                 if os.path.isdir(myfile):
-                    print 'rmdir %s||true' % myfile
+                    print ('rmdir %s||true' % myfile)
                     try:
                         os.rmdir(myfile)
                     except:
@@ -234,9 +234,9 @@ def pitchfork(args):
             return
         log('Package %s not found.' % myargs['name'])
         if len(glob('%s/var/pkg/%s*' % (_prefix, myargs['name']))) > 0:
-            print 'Nothing is done, did you mean:'
+            print ('Nothing is done, did you mean:')
             for mypkg in glob('%s/var/pkg/%s*' % (_prefix, myargs['name'])):
-                print os.path.basename(mypkg)
+                print (os.path.basename(mypkg))
         return
 
     if args.subcommand == 'fetch':
@@ -270,7 +270,7 @@ def pitchfork(args):
                 pass
             else:
                 try:
-                    # print '%s/%s' % (_distfiles, _prjname)
+                    # print ('%s/%s' % (_distfiles, _prjname))
                     os.mkdir('%s/%s' % (_distfiles, _prjname))
                 except:
                     raise Exception()
@@ -279,7 +279,7 @@ def pitchfork(args):
                 log("[ERROR] _archive is empty")
                 raise Exception()
             if os.path.exists(_prefetch):
-                print "using local %s" % _archive
+                print ("using local %s" % _archive)
                 try:
                     _out, _exit, _err = backticks('rm -f ./%s' % os.path.basename(_prefetch))
                     _out, _exit, _err = backticks('ln -sfn %s ./' % _prefetch)
@@ -290,7 +290,7 @@ def pitchfork(args):
                     if os.path.exists(_prefetch):
                         os.remove(_prefetch)
                     raise
-            print "fetching %s" % _url
+            print ("fetching %s" % _url)
             _out, _exit, _err = backticks('which curl || which wget')
             if not _exit == 0:
                 raise Exception('[ERROR] please install curl or wget')
