@@ -16,6 +16,8 @@ try:
 except Exception:
     pass
 
+PY3K = sys.version_info >= (3, 0)
+
 def backticks(cmd, merge_stderr=True, checked=False):
     """
     Simulates the perl backticks (``) command with error-handling support
@@ -33,7 +35,10 @@ def backticks(cmd, merge_stderr=True, checked=False):
                          stdout=subprocess.PIPE, stderr=_stderr,
                          close_fds=True)
 
-    out = [l[:-1] for l in p.stdout.readlines()]
+    if not PY3K:
+        out = [l[:-1] for l in p.stdout.readlines()]
+    else:
+        out = [l[:-1].decode('utf-8', 'backslashreplace') for l in p.stdout.readlines()]
 
     p.stdout.close()
     if not merge_stderr:
@@ -318,6 +323,7 @@ def pitchfork(args):
                     pass
                 _fetch = 'wget'
             else:
+                _fetch = 'wget'
                 pass
             _out, _exit, _err = backticks('%s %s' % (_fetch, _url))
             if _exit != 0:
