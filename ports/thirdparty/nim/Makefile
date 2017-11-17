@@ -1,10 +1,10 @@
 include ../../../mk/pitchfork.mk
 
 # Local variables
-_NAME            = nim-0.12.0
+_NAME            = nim-0.17.2
 _URL             = http://nim-lang.org/download
 _WRKSRC          = $(WORKDIR)/$(_NAME)
-_FILE            = $(_NAME).zip
+_FILE            = $(_NAME).tar.gz
 
 # Local check
 _tmpvar:=$(if $(shell which unzip),exists,$(error "unable to run unzip, consider doing yum install unzip"))
@@ -15,7 +15,7 @@ $(_FILE):
 	$(PFHOME)/bin/pitchfork fetch --url $(_URL)/$@
 do-extract: $(_WRKSRC)
 $(_WRKSRC): | do-fetch
-	unzip $(_FILE) -d $(WORKDIR)
+	tar zxvf $(_FILE) -C $(WORKDIR)
 do-build: $(_WRKSRC)/bin/nim
 $(_WRKSRC)/bin/nim: | do-extract
 	cd $(_WRKSRC) && sh build.sh
