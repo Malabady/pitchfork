@@ -74,7 +74,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
         find bin/bam2fasta \
              bin/bam2fastq \
         > $@
-	@echo "# $(_REVISION)" >> $@ 
+	@echo "# $(_REVISION)" >> $@
 do-clean:
 	$(MAKE) -C $(_WRKSRC)/build clean
 do-distclean:

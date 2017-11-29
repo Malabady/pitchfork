@@ -48,8 +48,8 @@ $(PREFIX)/var/pkg/$(_NAME):
                  $(STAGING)/$(_NAME)/include \
                  $(STAGING)/$(_NAME)/lib/pkgconfig \
                  $(STAGING)/$(_NAME)/etc
-	test -d $(_SSLLIB)/pkgconfig && cp -aL $(_SSLLIB)/pkgconfig/libcrypto.pc $(STAGING)/$(_NAME)/lib/pkgconfig/ || true
-	test -d $(_SSLLIB)/pkgconfig && cp -aL $(_SSLLIB)/pkgconfig/*ssl.pc      $(STAGING)/$(_NAME)/lib/pkgconfig/ || true
+	cp -aL $(_SSLLIB)/pkgconfig/libcrypto.pc $(STAGING)/$(_NAME)/lib/pkgconfig/ || true
+	cp -aL $(_SSLLIB)/pkgconfig/*ssl.pc      $(STAGING)/$(_NAME)/lib/pkgconfig/ || true
 	#cp -aL $(_SSLLIB)/pkgconfig/libtls.pc    $(STAGING)/$(_NAME)/lib/pkgconfig/
 	cp -aL $(_SSLLIB)/libcrypto*             $(STAGING)/$(_NAME)/lib/
 	cp -aL $(_SSLLIB)/libssl*                $(STAGING)/$(_NAME)/lib/

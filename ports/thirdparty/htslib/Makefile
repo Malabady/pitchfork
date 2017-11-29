@@ -39,7 +39,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 	cd $(_WRKSRC) && tar cf - */*.h | tar xf - -C $(PREFIX)/src/htslib/include/
 	cd $(_WRKSRC) && tar cf - *.a   | tar xf - -C $(PREFIX)/src/htslib/lib/
 	cd $(PREFIX)  && find src/htslib ! -type d > $@
-	@echo "# $(_REVISION)" >> $@ 
+	@echo "# $(_REVISION)" >> $@
 #this thing cannot be installed to prefix/lib or it will kill pysam/samtools
 else
 do-install: $(PREFIX)/var/pkg/$(_NAME)

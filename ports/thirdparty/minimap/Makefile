@@ -1,6 +1,6 @@
 include ../../../mk/pitchfork.mk
 
-# Local variables 
+# Local variables
 _NAME             = minimap
 _URL              = https://github.com/lh3/minimap/archive
 $(_NAME)_VERSION ?= 1cd6ae3bc7c7a6f9e7c03c0b7a93a12647bba244

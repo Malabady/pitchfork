@@ -62,7 +62,7 @@ do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	cd $(_WRKSRC)/build && tar cf - fasta2bam | tar xf - -C $(PREFIX)/bin
 	cd $(PREFIX) && find bin/fasta2bam  > $@
-	@echo "# $(_REVISION)" >> $@ 
+	@echo "# $(_REVISION)" >> $@
 do-clean:
 	$(MAKE) -C $(_WRKSRC)/build clean
 do-distclean:

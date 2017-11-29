@@ -57,7 +57,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
      && find bin/pbdagcon \
              bin/dazcon   \
         > $@
-	@echo "# $(_REVISION)" >> $@ 
+	@echo "# $(_REVISION)" >> $@
 else
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME):

@@ -36,9 +36,9 @@ do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rsync -ax $(_WRKSRC)/_build/lib/libpbcopper.a $(PREFIX)/lib/
 	rsync -ax $(_WRKSRC)/include/pbcopper  $(PREFIX)/include/
-	@echo lib/libpbcopper.a > $@ 
+	@echo lib/libpbcopper.a > $@
 	@cd $(PREFIX) && find include/pbcopper -type f >> $@
-	@echo "# $(_REVISION)" >> $@ 
+	@echo "# $(_REVISION)" >> $@
 do-clean:
 	$(MAKE) -C $(_WRKSRC)/_build clean
 do-distclean:

@@ -12,7 +12,7 @@ _P4CLIENT        = P4CLIENT=$(_P4CLIENTNAME)
 _BUILD           = $(_WRKSRC)/Sequel/ppa/build
 
 # Local works
-do-fetch: $(_WRKSRC) 
+do-fetch: $(_WRKSRC)
 	cd $(_WRKSRC) && p4 -c $(_P4CLIENTNAME) sync
 $(_WRKSRC):
 ifeq ($(wildcard $($(_NAME)_REPO)),)

@@ -49,7 +49,7 @@ $(_WRKSRC)/_build/ccs: | do-config
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rsync -ax $(_WRKSRC)/_build/ccs $(PREFIX)/bin/
-	@echo bin/ccs > $@ 
+	@echo bin/ccs > $@
 	     CMAKE_COMMAND=$(CMAKE) \
         Boost_INCLUDE_DIRS=$(BOOST_ROOT)/include \
               SWIG_COMMAND=$(shell . $(PREFIX)/setup-env.sh && which swig) \
@@ -58,7 +58,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
                    VERBOSE=1 \
         $(PIP) install --verbose --upgrade --no-deps $(DEVOPT) $(_WRKSRC)/
 	@echo pip uninstall $(_NAME) >> $@
-	@echo "# $(_REVISION)" >> $@ 
+	@echo "# $(_REVISION)" >> $@
 do-clean:
 	$(MAKE) -C $(_WRKSRC)/_build clean
 do-distclean:

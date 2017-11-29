@@ -76,6 +76,6 @@ do-clean:
 	@rm -rf ${_WRKSRC}/bin/
 	@rm -rf ${_WRKSRC}/build
 do-distclean:
-	test -d $(_WRKSRC) && cd $(_WRKSRC) && $(GIT) clean -xdf || true
+	cd $(_WRKSRC) && $(GIT) clean -xdf || true
 do-flush:
 	rm -rf $(_WRKSRC)

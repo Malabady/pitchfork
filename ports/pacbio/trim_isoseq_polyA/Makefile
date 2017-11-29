@@ -40,7 +40,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rsync -ax $(_WRKSRC)/bin/ $(PREFIX)/bin/
 	rsync -ax $(_WRKSRC)/lib/ $(PREFIX)/lib/
 	cd $(_WRKSRC) && find bin lib > $@
-	@echo "# $(_REVISION)" >> $@ 
+	@echo "# $(_REVISION)" >> $@
 do-clean:
 	$(MAKE) -C $(_WRKSRC)/_build clean
 do-distclean:
