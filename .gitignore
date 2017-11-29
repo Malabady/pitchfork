@@ -1,11 +1,13 @@
 /initialized.o
+/bin/*.pyc
 /workspace/
 /deployment/
 /staging/
+__pycache__/
 *.log
 *.tar.gz
 *.tar.bz2
 *.tgz
 *.zip
-/bin/*.pyc
 get-pip.py
+settings.mk.*
