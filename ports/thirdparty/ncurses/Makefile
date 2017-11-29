@@ -35,17 +35,12 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
             prefix=$(STAGING)/$(_NAME) \
             ticdir=$(STAGING)/$(_NAME)/share/terminfo \
             install >& install.log || $(PFHOME)/bin/diewith install.log
-	if [ -d $(STAGING)/$(_NAME)/lib64 ]; then \
-           ln -s libncurses.$(DYLIB) $(STAGING)/$(_NAME)/lib64/libcurses.$(DYLIB); \
-        elif [ -d $(STAGING)/$(_NAME)/lib ]; then \
-           ln -s libncurses.$(DYLIB) $(STAGING)/$(_NAME)/lib/libcurses.$(DYLIB); \
-        else \
-           exit 1; \
-        fi
 	mkdir -p $(STAGING)/$(_NAME)/lib/pkgconfig
 	$(SED) -e "s@^prefix=.*@prefix=$(PREFIX)@" ncurses.pc > $(STAGING)/$(_NAME)/lib/pkgconfig/ncurses.pc
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
+	ln -sfn libncurses.$(DYLIB) $(PREFIX)/lib/libcurses.$(DYLIB)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
+	echo lib/libcurses.$(DYLIB) >> $@
 else
 _NCURSES := $(shell ../../../bin/checkNCURSES $(HAVE_NCURSES))
 _NAME     = ncurses
