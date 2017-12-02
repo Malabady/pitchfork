@@ -32,7 +32,7 @@ else ifneq ($(origin HAVE_LIBSSL),undefined)
 python:           openssl
 endif
 readline:         ccache ncurses
-samtools:         ccache zlib ncurses
+samtools:         ccache zlib ncurses htslib
 bamtools:         ccache zlib
 cmake:            ccache zlib
 ncurses:          ccache
