@@ -86,6 +86,7 @@ export PKG_CONFIG_PATH   := $(PREFIX)/lib/pkgconfig
 ifeq ($(OPSYS),Darwin)
     HAVE_PYTHON ?= /usr/bin/python
     HAVE_ZLIB ?= /usr
+    HAVE_LIBBZIP2 ?= /usr
     DYLIB  = dylib
     export DYLD_LIBRARY_PATH := $(PREFIX)/lib:${DYLD_LIBRARY_PATH}
 else

@@ -185,6 +185,7 @@ ccache:
 endif
 ifeq ($(OPSYS),Darwin)
 HAVE_ZLIB ?=
+HAVE_LIBBZIP2 ?=
 readline: ;
 ncurses: ;
 libpng: ;
