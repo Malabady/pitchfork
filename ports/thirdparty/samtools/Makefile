@@ -21,7 +21,7 @@ $(_FILE):
 do-config: $(_WRKSRC)/config.log
 $(_WRKSRC)/config.log: | do-extract
 	(cd $(_WRKSRC) && \
-         LDFLAGS="$(LDFLAGS) -lz" ./configure --prefix=$(PREFIX) \
+         LDFLAGS="$(LDFLAGS) -lz -pthread" ./configure --prefix=$(PREFIX) \
                      --without-ncursesw \
                      --with-htslib=$(PREFIX)/src/htslib) >& config.log || $(PFHOME)/bin/diewith config.log
 do-build: $(_WRKSRC)/samtools
