@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
 import sys
 import os
 from glob import glob
@@ -253,19 +252,18 @@ def pitchfork(args):
         if ' ' in _prefix or ' ' in _workdir:
             print("empty char is not compatible with startover feature.")
             return
-        print("Are you sure? \n[y/n]", end='')
+        sys.stdout.write("Are you sure?\n[y/n] ")
+        sys.stdout.flush()
         with KeyPoller() as keyPoller:
             while True:
                 c = keyPoller.poll()
                 if not c is None:
                     if c.lower() == "y":
-                        # print ("y is pressed")
-                        # print ("rm -rf %s/* %s/.Python %s/staging/* %s/*" % (_prefix, _prefix, _projhome, _workdir))
+                        sys.stdout.write("\n")
+                        # use VERBOSE=1 for debug
                         _out, _exit, _err = backticks("rm -rf %s/* %s/.Python %s/staging/* %s/*" % (_prefix, _prefix, _projhome, _workdir))
-                        # print ("cd %s/ports && git clean -xdf" % _projhome)
                         _out, _exit, _err = backticks("cd %s/ports && git clean -xdf" % _projhome)
                         if _pipcache != '':
-                            # print ("find %s -name '*_x86_64.whl' -delete -print" % _pipcache)
                             _out, _exit, _err = backticks("find %s -name '*_x86_64.whl' -delete -print" % _pipcache)
                         break
                     elif c.lower() == 'n':
@@ -275,7 +273,8 @@ def pitchfork(args):
                         print ("startover cancelled")
                         return
                     else:
-                        print ("y or n key is required \n[y/n]", end='')
+                        sys.stdout.write("y or n key is required\n[y/n] ")
+                        sys.stdout.flush()
         return
 
     if args.subcommand == 'uninstall':
