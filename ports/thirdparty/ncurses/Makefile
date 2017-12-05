@@ -31,6 +31,7 @@ $(_WRKSRC)/lib/libncurses.$(DYLIB): | do-config
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rm -rf $(STAGING)/$(_NAME)
+	$(SED) -i -e 's@^#! /bin/sh@#!/bin/sh@' $(_WRKSRC)/headers.sh
 	$(MAKE) -C $(_WRKSRC) \
             prefix=$(STAGING)/$(_NAME) \
             ticdir=$(STAGING)/$(_NAME)/share/terminfo \
