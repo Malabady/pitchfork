@@ -259,7 +259,7 @@ def pitchfork(args):
                 c = keyPoller.poll()
                 if not c is None:
                     if c.lower() == "y":
-                        sys.stdout.write("\n")
+                        sys.stdout.write("y\n")
                         # use VERBOSE=1 for debug
                         _out, _exit, _err = backticks("rm -rf %s/* %s/.Python %s/staging/* %s/*" % (_prefix, _prefix, _projhome, _workdir))
                         _out, _exit, _err = backticks("cd %s/ports && git clean -xdf" % _projhome)
@@ -267,10 +267,10 @@ def pitchfork(args):
                             _out, _exit, _err = backticks("find %s -name '*_x86_64.whl' -delete -print" % _pipcache)
                         break
                     elif c.lower() == 'n':
-                        print ("startover cancelled")
+                        print ("n\nstartover cancelled")
                         return
                     elif c.lower() == 'q':
-                        print ("startover cancelled")
+                        print ("q\nstartover cancelled")
                         return
                     else:
                         sys.stdout.write("y or n key is required\n[y/n] ")
