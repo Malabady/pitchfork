@@ -4,9 +4,9 @@ include ../../../mk/pitchfork.mk
 include ../../../mk/chkcxx.mk
 
 # Local variables
-_NAME    = boost-1.60.0
+_NAME    = boost-1.65.1
 _URL     = https://prdownloads.sourceforge.net/boost
-_FILE    = boost_1_60_0.tar.gz
+_FILE    = boost_1_65_1.tar.gz
 _WRKSRC  = $(WORKDIR)/$(_NAME)
 
 # Local works
@@ -48,7 +48,7 @@ do-install:
 	ln -fsn $(_BOOST)/include/boost $(PREFIX)/include/
 	ln -fsn $(_BOOST)/lib/libboost* $(PREFIX)/lib/
 	echo include/boost > $(PREFIX)/var/pkg/$(_NAME)
-	cd $(PREFIX) && find lib -name 'libbost*' >> $(PREFIX)/var/pkg/$(_NAME)
+	cd $(PREFIX) && find lib -name 'libboost*' >> $(PREFIX)/var/pkg/$(_NAME)
 endif
 do-clean:
 	rm -f build.log
