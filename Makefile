@@ -456,18 +456,6 @@ fasta2bam:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 PacBioTestData:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
-clean-%:
-	$(MAKE) -C ports/pacbio/$* do-clean
-distclean-%:
-	test -e ports/pacbio/$*     && $(MAKE) -C ports/pacbio/$*     do-distclean || true
-	test -e ports/thirdparty/$* && $(MAKE) -C ports/thirdparty/$* do-distclean || true
-	test -e ports/python/$*     && $(MAKE) -C ports/python/$*     do-distclean || true
-reinstall-%:
-	$(MAKE) -C ports/pacbio/$* do-uninstall
-	$(MAKE) -C ports/pacbio/$* do-distclean
-	$(MAKE) -C ports/pacbio/$* do-install
-clean: clean-blasr_libcpp clean-blasr clean-htslib clean-seqan clean-pbbam clean-unanimity clean-dazzdb clean-daligner clean-damasker clean-dextractor clean-pbdagcon clean-bam2fastx clean-pbcore clean-pbcommand clean-pbsmrtpipe clean-falcon_kit clean-pbfalcon clean-pypeFLOW clean-ConsensusCore clean-GenomicConsensus clean-pbreports clean-kineticsTools clean-pbalign clean-pbcoretools clean-pblaa clean-pbh5tools clean-pbbarcode clean-ppa clean-Cogent
-distclean: distclean-blasr_libcpp distclean-blasr distclean-htslib distclean-seqan distclean-pbbam distclean-unanimity distclean-dazzdb distclean-daligner distclean-damasker distclean-dextractor distclean-pbdagcon distclean-bam2fastx distclean-pbcore distclean-pbcommand distclean-pbsmrtpipe distclean-falcon_kit distclean-pbfalcon distclean-pypeFLOW distclean-ConsensusCore distclean-GenomicConsensus distclean-pbreports distclean-kineticsTools distclean-pbalign distclean-pbcoretools distclean-pblaa distclean-pbh5tools distclean-pbbarcode distclean-ppa distclean-Cogent
 test: PacBioTestData test-pbtranscript
 test-pbtranscript: pbtranscript CramUnit
 	$(MAKE) -C ports/pacbio/pbtranscript do-test
@@ -482,4 +470,16 @@ test-bax2bam: bax2bam
 test-falcon_polish: falcon_polish nose
 	$(MAKE) -C ports/pacbio/falcon_polish do-test
 
+clean-%:
+	bin/pitchfork clean $*
+distclean-%:
+	bin/pitchfork distclean $*
+clean:
+	bin/pitchfork clean --all
+distclean:
+	bin/pitchfork distclean --all
+reinstall-%:
+	bin/pitchfork uninstall $* || truue
+	bin/pitchfork distclean $*
+	$(MAKE) -C ports/pacbio/$* ${RULE}
 .PHONY: ConsensusCore GenomicConsensus MarkupSafe appnope avro biopython blasr boost ccache cmake Cogent cram cycler cython dazzdb daligner damasker dextractor decorator default docopt ecdsa fabric gmap gmock gnureadline gtest hmmer htslib ipython isodate jsonschema kineticsTools libpng matplotlib ncurses networkx nim nose numpy openblas openssl paramiko pbalign pbbam unanimity pbchimera pbcommand pbcore pbcoretools pbdagcon pbfalcon pblaa pbreports pexpect pickleshare pip ppa ptyprocess pycrypto pydot pyparsing pypeFLOW pysam python pytz rdfextras rdflib readline requests samtools scipy seqan simplegeneric six swig tcl traitlets world xmlbuilder zlib pbh5tools tabulate pbbarcode

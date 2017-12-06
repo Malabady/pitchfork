@@ -21,5 +21,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-extract
 	find $(STAGING)/$(_NAME) ! -type d|grep -v sbt.bat|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
 do-clean:
 	rm -rf $(STAGING)/$(_NAME)
+do-distclean:
+	true
 do-flush:
 	rm -rf $(_WRKSRC) || true

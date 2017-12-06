@@ -17,6 +17,15 @@ try:
     VERBOSE = int(VERBOSE)
 except Exception:
     pass
+MAKE = os.environ.get('MAKE')
+if not MAKE:
+    MAKE = 'make'
+elif os.path.basename(MAKE) == _whatami:
+    MAKE = 'make'
+elif not os.path.isfile(MAKE) or not os.access(MAKE, os.X_OK):
+    MAKE = 'make'
+else:
+    pass
 
 PY3K = sys.version_info >= (3, 0)
 
@@ -143,6 +152,24 @@ def parseargs(args):
     sub = subparsers.add_parser('startover',
                                 help = 'clean up pitchfork',
                                 description='''To startover, type y''')
+
+    sub = subparsers.add_parser('clean',
+                                help = 'clean up a pitchfork build',
+                                description='''To stage a clean rebuild''')
+    sub.add_argument('--all', action='store_true', help='clean every build.')
+    sub.add_argument('name', nargs='?',
+                     metavar='<package>',
+                     type=str,
+                     help='The name of the package.')
+
+    sub = subparsers.add_parser('distclean',
+                                help = 'startover inside a build workspace.',
+                                description='''To clean for reconfig and rebuild''')
+    sub.add_argument('--all', action='store_true', help='distclean every build.')
+    sub.add_argument('name', nargs='?',
+                     metavar='<package>',
+                     type=str,
+                     help='The name of the package.')
 
     return parser.parse_args()
 
@@ -416,6 +443,50 @@ def pitchfork(args):
             return
 
         raise Exception('[ERROR] you need to specify --url')
+
+    if args.subcommand == 'clean':
+        myargs = vars(args)
+        if myargs['all']:
+            for myfolder in glob('ports/*/*'):
+                if glob('%s/Makefile' % myfolder):
+                    out, _exit, _err = backticks('%s -C %s do-clean' % (MAKE, myfolder))
+                else:
+                    pass
+        elif myargs['name']:
+            """ for None and '' """
+            if glob('ports/thirdparty/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/thirdparty/%s do-clean' % (MAKE, myargs['name']))
+            elif glob('ports/python/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/python/%s do-clean' % (MAKE, myargs['name']))
+            elif glob('ports/pacbio/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/pacbio/%s do-clean' % (MAKE, myargs['name']))
+            else:
+                raise Exception('[ERROR] package %s not found' % myargs['name'])
+        else:
+            raise Exception('[ERROR] no package specified')
+        return
+
+    if args.subcommand == 'distclean':
+        myargs = vars(args)
+        if myargs['all']:
+            for myfolder in glob('ports/*/*'):
+                if glob('%s/Makefile' % myfolder):
+                    out, _exit, _err = backticks('%s -C %s do-distclean' % (MAKE, myfolder))
+                else:
+                    pass
+        elif myargs['name']:
+            """ for None and '' """
+            if glob('ports/thirdparty/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/thirdparty/%s do-distclean' % (MAKE, myargs['name']))
+            elif glob('ports/python/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/python/%s do-distclean' % (MAKE, myargs['name']))
+            elif glob('ports/pacbio/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/pacbio/%s do-distclean' % (MAKE, myargs['name']))
+            else:
+                raise Exception('[ERROR] package %s not found' % myargs['name'])
+        else:
+            raise Exception('[ERROR] no package specified')
+        return
 
     raise Exception('Unknown subcommand: {!r}'.format(args.subcommand))
 
