@@ -13,5 +13,7 @@ $(PREFIX)/var/pkg/$(_NAME):
 	$(PIP) install --root $(STAGING)/$(_NAME) --no-deps docopt==$(_VER)
 	rsync -aKx $(STAGING)/$(_NAME)/$(PREFIX)/ $(PREFIX)/
 	cd $(STAGING)/$(_NAME)$(PREFIX) && find * ! -type d|grep -v '^$$'|sort -r > $@
-do-clean:
+do-clean: do-flush
+do-distclean: do-flush
+do-flush:
 	rm -rf $(STAGING)/$(_NAME)

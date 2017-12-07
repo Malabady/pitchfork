@@ -72,7 +72,7 @@ endif
 do-test:
 	$(MAKE) -C $(_WRKSRC)/build check
 do-clean:
-	$(MAKE) -C $(_WRKSRC)/build clean
+	$(MAKE) -C $(_WRKSRC)/build clean || rm -rf $(MAKE) -C $(_WRKSRC)/build
 do-distclean:
 	cd $(_WRKSRC) && $(GIT) clean -xdf
 do-flush:

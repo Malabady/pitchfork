@@ -8,5 +8,4 @@ default:
 
 do-uninstall:
 	@PREFIX=$(PREFIX) $(PFHOME)/bin/uninstall $(_NAME)
-#do-distclean: do-clean
 provided:

@@ -9,3 +9,9 @@ do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME):
 	ln -sfn $(_EXEC) $(PREFIX)/bin/java
 	echo bin/java > $@
+do-clean:
+	true
+do-distclean:
+	true
+do-flush:
+	true

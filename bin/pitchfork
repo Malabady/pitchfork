@@ -3,6 +3,8 @@ import sys
 import os
 from glob import glob
 import _argparse as argparse
+import select
+import termios
 
 __VERSION__ = '0.0.2'
 _whatami  = os.path.basename(sys.argv[0])
@@ -14,6 +16,15 @@ VERBOSE = os.environ.get('VERBOSE')
 try:
     VERBOSE = int(VERBOSE)
 except Exception:
+    pass
+MAKE = os.environ.get('MAKE')
+if not MAKE:
+    MAKE = 'make'
+elif os.path.basename(MAKE) == _whatami:
+    MAKE = 'make'
+elif not os.path.isfile(MAKE) or not os.access(MAKE, os.X_OK):
+    MAKE = 'make'
+else:
     pass
 
 PY3K = sys.version_info >= (3, 0)
@@ -65,8 +76,31 @@ def log(*msgs):
     sys.stderr.write(' '.join(str(m) for m in msgs) + '\n')
 
 
+class KeyPoller():
+    def __enter__(self):
+        # Save the terminal settings
+        self.fd = sys.stdin.fileno()
+        self.new_term = termios.tcgetattr(self.fd)
+        self.old_term = termios.tcgetattr(self.fd)
+
+        # New terminal setting unbuffered
+        self.new_term[3] = (self.new_term[3] & ~termios.ICANON & ~termios.ECHO)
+        termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.new_term)
+
+        return self
+
+    def __exit__(self, type, value, traceback):
+        termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.old_term)
+
+    def poll(self):
+        dr,dw,de = select.select([sys.stdin], [], [], 0)
+        if not dr == []:
+            return sys.stdin.read(1)
+        return None
+
+
 def parseargs(args):
-    desc = 'Pacbio unofficial pitchfork building system.'
+    desc = 'The UNOFFICIAL pacbio pitchfork building system.'
     epil = 'This gets you a subroot-like software deployment. The deployment is unrelocatable but easier to understand.'
     parser = argparse.ArgumentParser(
         epilog=epil,
@@ -114,6 +148,28 @@ def parseargs(args):
                                 help='show configurations.',
                                 description='''What's in your settings.mk?''')
     sub.add_argument('--prefix', action='store_true', help='prints out PREFIX value.')
+
+    sub = subparsers.add_parser('startover',
+                                help = 'clean up pitchfork',
+                                description='''To startover, type y''')
+
+    sub = subparsers.add_parser('clean',
+                                help = 'clean up a pitchfork build',
+                                description='''To stage a clean rebuild''')
+    sub.add_argument('--all', action='store_true', help='clean every build.')
+    sub.add_argument('name', nargs='?',
+                     metavar='<package>',
+                     type=str,
+                     help='The name of the package.')
+
+    sub = subparsers.add_parser('distclean',
+                                help = 'startover inside a build workspace.',
+                                description='''To clean for reconfig and rebuild''')
+    sub.add_argument('--all', action='store_true', help='distclean every build.')
+    sub.add_argument('name', nargs='?',
+                     metavar='<package>',
+                     type=str,
+                     help='The name of the package.')
 
     return parser.parse_args()
 
@@ -165,6 +221,7 @@ def pitchfork(args):
         return
 
     _prefix = ''
+    _workdir = ''
     if os.path.exists('%s/settings.mk' % _projhome):
         for line in open('%s/settings.mk' % _projhome, 'r'):
             if line.lstrip().startswith('#'):
@@ -174,14 +231,37 @@ def pitchfork(args):
                     _prefix = line.strip().split('=')[1].strip()
                     _prefix = _prefix.replace('${HOME}', os.getenv('HOME'))
                     _prefix = _prefix.replace('$(HOME)', os.getenv('HOME'))
-                break
+                    continue
+            if 'WORKDIR' in line.strip():
+                if line.strip().split('=')[0].strip() == 'WORKDIR':
+                    _workdir = line.strip().split('=')[1].strip()
+                    _workdir = _workdir.replace('${HOME}', os.getenv('HOME'))
+                    _workdir = _workdir.replace('$(HOME)', os.getenv('HOME'))
+                    continue
+
     if 'PREFIX' in os.environ:
         _prefix = "%s" % os.environ['PREFIX']
     elif os.path.exists(_prefix):
         pass
     else:
         if os.path.exists("%s/deployment" % _projhome):
+            '''RISK: PREFIX default should not be set here'''
             _prefix = "%s/deployment" % _projhome
+    if 'WORKDIR' in os.environ:
+        _workdir = "%s" % os.environ['WORKDIR']
+    elif os.path.exists(_workdir):
+        pass
+    else:
+        if os.path.exists("%s/workspace" % _projhome):
+            '''RISK: WORKDIR default should not be set here'''
+            _workdir = "%s/workspace" % _projhome
+    if 'PIP_CACHE' in os.environ:
+        _pipcache = "%s" % os.environ['PIP_CACHE']
+    elif os.path.exists("%s/.git/pip" % _projhome):
+        '''RISK: PIP_CACHE default should not be set here'''
+        _pipcache = "%s/.git/pip" % _projhome
+    else:
+        _pipcache = ""
 
     if args.subcommand == 'sconf':
         myargs = vars(args)
@@ -192,6 +272,36 @@ def pitchfork(args):
     if args.subcommand == 'installed':
         for mypkg in glob('%s/var/pkg/*' % _prefix):
             print (os.path.basename(mypkg))
+        return
+
+    if args.subcommand == 'startover':
+        print("This will erase everything in %s/, staging/ and %s/ directories." % (_prefix, _workdir))
+        if ' ' in _prefix or ' ' in _workdir:
+            print("empty char is not compatible with startover feature.")
+            return
+        sys.stdout.write("Are you sure?\n[y/n] ")
+        sys.stdout.flush()
+        with KeyPoller() as keyPoller:
+            while True:
+                c = keyPoller.poll()
+                if not c is None:
+                    if c.lower() == "y":
+                        sys.stdout.write("y\n")
+                        # use VERBOSE=1 for debug
+                        _out, _exit, _err = backticks("rm -rf %s/* %s/.Python %s/staging/* %s/*" % (_prefix, _prefix, _projhome, _workdir))
+                        _out, _exit, _err = backticks("cd %s/ports && git clean -xdf" % _projhome)
+                        if _pipcache != '':
+                            _out, _exit, _err = backticks("find %s -name '*_x86_64.whl' -delete -print" % _pipcache)
+                        break
+                    elif c.lower() == 'n':
+                        print ("n\nstartover cancelled")
+                        return
+                    elif c.lower() == 'q':
+                        print ("q\nstartover cancelled")
+                        return
+                    else:
+                        sys.stdout.write("y or n key is required\n[y/n] ")
+                        sys.stdout.flush()
         return
 
     if args.subcommand == 'uninstall':
@@ -333,6 +443,50 @@ def pitchfork(args):
             return
 
         raise Exception('[ERROR] you need to specify --url')
+
+    if args.subcommand == 'clean':
+        myargs = vars(args)
+        if myargs['all']:
+            for myfolder in glob('ports/*/*'):
+                if glob('%s/Makefile' % myfolder):
+                    out, _exit, _err = backticks('%s -C %s do-clean' % (MAKE, myfolder))
+                else:
+                    pass
+        elif myargs['name']:
+            """ for None and '' """
+            if glob('ports/thirdparty/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/thirdparty/%s do-clean' % (MAKE, myargs['name']))
+            elif glob('ports/python/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/python/%s do-clean' % (MAKE, myargs['name']))
+            elif glob('ports/pacbio/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/pacbio/%s do-clean' % (MAKE, myargs['name']))
+            else:
+                raise Exception('[ERROR] package %s not found' % myargs['name'])
+        else:
+            raise Exception('[ERROR] no package specified')
+        return
+
+    if args.subcommand == 'distclean':
+        myargs = vars(args)
+        if myargs['all']:
+            for myfolder in glob('ports/*/*'):
+                if glob('%s/Makefile' % myfolder):
+                    out, _exit, _err = backticks('%s -C %s do-distclean' % (MAKE, myfolder))
+                else:
+                    pass
+        elif myargs['name']:
+            """ for None and '' """
+            if glob('ports/thirdparty/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/thirdparty/%s do-distclean' % (MAKE, myargs['name']))
+            elif glob('ports/python/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/python/%s do-distclean' % (MAKE, myargs['name']))
+            elif glob('ports/pacbio/%s/Makefile' % myargs['name']):
+                out, _exit, _err = backticks('%s -C ports/pacbio/%s do-distclean' % (MAKE, myargs['name']))
+            else:
+                raise Exception('[ERROR] package %s not found' % myargs['name'])
+        else:
+            raise Exception('[ERROR] no package specified')
+        return
 
     raise Exception('Unknown subcommand: {!r}'.format(args.subcommand))
 

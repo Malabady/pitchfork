@@ -54,7 +54,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 	cd $(_WRKSRC) && find bin include|grep -v '^$$'|sort -r > $@
 	@echo "# $(_REVISION)" >> $@
 do-clean:
-	$(MAKE) -C $(_WRKSRC)/_build clean
+	$(MAKE) -C $(_WRKSRC)/_build clean || rm -rf $(_WRKSRC)/_build
 do-distclean:
 	cd $(_WRKSRC) && $(GIT) clean -xdf
 do-flush:

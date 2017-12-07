@@ -23,6 +23,8 @@ $(PREFIX)/var/pkg/$(_NAME): | do-fetch
 	$(PIP) install --no-deps $(DEVOPT) $(_WRKSRC)/
 	@echo pip uninstall $(_NAME) > $@
 	@echo "# $(_REVISION)" >> $@
+do-clean:
 do-distclean:
 	cd $(_WRKSRC) && $(GIT) clean -xdf
-do-clean:
+do-flush:
+	rm -rf $(_WRKSRC)
