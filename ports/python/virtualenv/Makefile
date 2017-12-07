@@ -31,3 +31,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-extract
              bin/activate* bin/easy_install* bin/wheel bin/pydoc* \
 	| grep -v /pip \
         | sort -r > $@
+do-clean: do-flush
+do-distclean: do-flush
+do-flush:
+	rm -rf $(WORKDIR)

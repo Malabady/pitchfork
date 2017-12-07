@@ -19,5 +19,7 @@ $(PREFIX)/var/pkg/$(_NAME):
 	MPLSETUPCFG=./setup.cfg $(PIP) install --root $(STAGING)/$(_NAME) --no-deps matplotlib==$(_VER)
 	rsync -aKx $(STAGING)/$(_NAME)/$(PREFIX)/ $(PREFIX)/
 	cd $(STAGING)/$(_NAME)$(PREFIX) && find * ! -type d|grep -v '^$$'|sort -r > $@
-do-clean:
+do-clean: do-flush
+do-distclean: do-flush
+do-flush:
 	rm -rf $(STAGING)/$(_NAME)
