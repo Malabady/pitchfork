@@ -205,10 +205,8 @@ hdf5:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 gtest:
 	$(MAKE) -C ports/thirdparty/$@ do-install
-# gtest misses a do-clean rule.
 gmock:
 	$(MAKE) -C ports/thirdparty/$@ do-install
-# gmock misses a do-clean rule.
 boost:
 	$(MAKE) -C ports/thirdparty/$@ ${RULE}
 samtools:

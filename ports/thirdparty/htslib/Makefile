@@ -51,9 +51,8 @@ $(PREFIX)/var/pkg/$(_NAME):
 	cd $(STAGING)/$(_NAME) && find src/htslib ! -type d > $@
 	@echo "# $(HAVE_HTSLIB)" >> $@
 endif
-do-clean:
-	$(MAKE) -C $(_WRKSRC) clean
-do-distclean:
-	cd $(_WRKSRC) && $(GIT) clean -xdf
-do-flash:
+do-clean: do-flush
+do-distclean: do-flush
+do-flush:
 	rm -rf $(_WRKSRC)
+	rm -f build.log install.log config.log

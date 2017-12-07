@@ -27,10 +27,8 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rsync -avx $(_WRKSRC)/minimap $(PREFIX)/bin/ >& install.log
 	echo $(PREFIX)/bin/minimap > $(PREFIX)/var/pkg/$(_NAME)
 	echo "# $(_VERSION)" >> $(PREFIX)/var/pkg/$(_NAME)
-do-clean:
-	$(MAKE) -C $(_WRKSRC) clean
-	rm -f build.log install.log
-	rm -rf $(STAGING)/$(_NAME)
-do-distclean: | do-clean
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
-	rm -rf $(_WRKSRC) || true
+	rm -rf $(_WRKSRC) 
+	rm -f build.log install.log

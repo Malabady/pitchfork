@@ -58,4 +58,5 @@ do-distclean:
 	rm -f config.log $(_WRKSRC)/bootstrap.log
 	cd $(_WRKSRC) && rm -rf bin.v2 project-config.jam b2 bjam
 do-flush:
-	rm -rf $(_WRKSRC) || true
+	rm -rf $(_WRKSRC)
+	rm -f build.log config.log

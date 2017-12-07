@@ -33,8 +33,8 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 	echo lib/nim >> $@
 	echo share/doc/nim >> $@
 	find $(STAGING)/$(_NAME)/nim/config ! -type d | awk -F '$(STAGING)/$(_NAME)/nim/config/' '{print "etc/"$$2}' >> $@
-do-clean:
-	$(MAKE) -C $(_WRKSRC) clean
-	rm -rf $(STAGING)/$(_NAME)
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
-	rm -rf $(_WRKSRC) || true
+	rm -rf $(_WRKSRC)
+	rm -f build.log install.log

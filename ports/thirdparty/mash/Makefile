@@ -28,10 +28,8 @@ $(PREFIX)/var/pkg/$(_NAME): | do-extract
 	tar zxf $(_FILE) -C $(STAGING)/$(_NAME)/bin/
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
-do-clean:
-	rm -f build.log install.log
-	rm -rf $(STAGING)/$(_NAME)
-do-distclean:
-	rm -f $(_WRKSRC)/config.log config.log
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
-	rm -rf $(_WRKSRC) || true
+	rm -rf $(_WRKSRC)
+	rm -f build.log install.log

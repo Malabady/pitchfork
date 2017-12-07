@@ -30,12 +30,8 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 	$(MAKE) -C $(_WRKSRC) prefix=$(STAGING)/$(_NAME) install >& install.log || $(PFHOME)/bin/diewith install.log
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
-do-clean:
-	$(MAKE) -C $(_WRKSRC) clean
-	rm -f build.log install.log
-	rm -rf $(STAGING)/$(_NAME)
-do-distclean:
-	$(MAKE) -C $(_WRKSRC) distclean
-	rm -f $(_WRKSRC)/config.log config.log
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
-	rm -rf $(_WRKSRC) || true
+	rm -rf $(_WRKSRC)
+	rm -f build.log install.log config.log
