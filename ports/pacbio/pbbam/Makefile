@@ -71,4 +71,7 @@ $(PREFIX)/var/pkg/$(_NAME):
 	cd $(STAGING)/$(_NAME) && tar cf - bin lib include | tar xf - -C $(PREFIX)
 	cd $(STAGING)/$(_NAME) && find bin lib include ! -type d > $@
 	@echo "# $(HAVE_PBBAM)" >> $@
+do-clean:
+do-distclean:
+do-flush:
 endif

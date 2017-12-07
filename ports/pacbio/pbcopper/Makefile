@@ -40,7 +40,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 	@cd $(PREFIX) && find include/pbcopper -type f >> $@
 	@echo "# $(_REVISION)" >> $@
 do-clean:
-	$(MAKE) -C $(_WRKSRC)/_build clean
+	$(MAKE) -C $(_WRKSRC)/_build clean || rm -rf $(_WRKSRC)/_build
 do-distclean:
 	cd $(_WRKSRC) && $(GIT) clean -xdf
 do-flush:

@@ -64,7 +64,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 	cd $(PREFIX) && find bin/fasta2bam  > $@
 	@echo "# $(_REVISION)" >> $@
 do-clean:
-	$(MAKE) -C $(_WRKSRC)/build clean
+	$(MAKE) -C $(_WRKSRC)/build clean || rm -rf $(_WRKSRC)/build
 do-distclean:
 	cd $(_WRKSRC) && $(GIT) clean -xdf
 do-flush:

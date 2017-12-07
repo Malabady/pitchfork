@@ -76,7 +76,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
         > $@
 	@echo "# $(_REVISION)" >> $@
 do-clean:
-	$(MAKE) -C $(_WRKSRC)/build clean
+	$(MAKE) -C $(_WRKSRC)/build clean || rm -r $(_WRKSRC)/build
 do-distclean:
 	cd $(_WRKSRC) && $(GIT) clean -xdf
 do-flush:

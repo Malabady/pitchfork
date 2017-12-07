@@ -152,7 +152,6 @@ pbsv:             ngmlr pysam libbzip2 pbcore
 pbsvtools:        pbsv pbcommand pbcoretools
 pblaa:            htslib pbbam seqan unanimity
 #
-ppa:               boost cmake pbbam htslib
 trim_isoseq_polyA: boost cmake zlib libbzip2
 pysiv2:            fabric requests nose xmlbuilder pbsmrtpipe pbcoretools
 PacBioTestData:    pip
@@ -414,8 +413,6 @@ pbh5tools:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 pbbarcode:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
-ppa:
-	$(MAKE) -C ports/pacbio/$@ ${RULE}
 Cogent:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 #
@@ -480,4 +477,4 @@ reinstall-%:
 	bin/pitchfork uninstall $* || truue
 	bin/pitchfork distclean $*
 	$(MAKE) -C ports/pacbio/$* ${RULE}
-.PHONY: ConsensusCore GenomicConsensus MarkupSafe appnope avro biopython blasr boost ccache cmake Cogent cram cycler cython dazzdb daligner damasker dextractor decorator default docopt ecdsa fabric gmap gmock gnureadline gtest hmmer htslib ipython isodate jsonschema kineticsTools libpng matplotlib ncurses networkx nim nose numpy openblas openssl paramiko pbalign pbbam unanimity pbchimera pbcommand pbcore pbcoretools pbdagcon pbfalcon pblaa pbreports pexpect pickleshare pip ppa ptyprocess pycrypto pydot pyparsing pypeFLOW pysam python pytz rdfextras rdflib readline requests samtools scipy seqan simplegeneric six swig tcl traitlets world xmlbuilder zlib pbh5tools tabulate pbbarcode
+.PHONY: ConsensusCore GenomicConsensus MarkupSafe appnope avro biopython blasr boost ccache cmake Cogent cram cycler cython dazzdb daligner damasker dextractor decorator default docopt ecdsa fabric gmap gmock gnureadline gtest hmmer htslib ipython isodate jsonschema kineticsTools libpng matplotlib ncurses networkx nim nose numpy openblas openssl paramiko pbalign pbbam unanimity pbchimera pbcommand pbcore pbcoretools pbdagcon pbfalcon pblaa pbreports pexpect pickleshare pip ptyprocess pycrypto pydot pyparsing pypeFLOW pysam python pytz rdfextras rdflib readline requests samtools scipy seqan simplegeneric six swig tcl traitlets world xmlbuilder zlib pbh5tools tabulate pbbarcode

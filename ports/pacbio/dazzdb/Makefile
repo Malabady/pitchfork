@@ -34,7 +34,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 	touch $@
 	@echo "# $(_REVISION)" >> $@
 do-clean:
-	$(MAKE) -C $(_WRKSRC)/build clean
+	$(MAKE) -C $(_WRKSRC)/build clean || rm -rf $(_WRKSRC)/build
 do-distclean:
 	cd $(_WRKSRC) && $(GIT) clean -xdf
 do-flash:
