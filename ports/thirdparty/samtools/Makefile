@@ -1,8 +1,8 @@
 include ../../../mk/pitchfork.mk
 
 # Local variables
-_NAME   = samtools-1.3.1
-_URL    = https://github.com/samtools/samtools/releases/download/1.3.1
+_NAME   = samtools-1.6
+_URL    = https://github.com/samtools/samtools/releases/download/1.6
 _WRKSRC = $(WORKDIR)/$(_NAME)
 _FILE   = $(_NAME).tar.bz2
 
