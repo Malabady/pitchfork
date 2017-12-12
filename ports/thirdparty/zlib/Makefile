@@ -38,16 +38,14 @@ $(PREFIX)/var/pkg/$(_NAME):
 	cp -aL $(_ZLIB)/include/zlib.h $(_ZLIB)/include/zconf.h $(STAGING)/$(_NAME)/include/
 	cp -aL $(_ZLIB)/lib/libz.*                              $(STAGING)/$(_NAME)/lib/
 	mkdir -p $(STAGING)/$(_NAME)/lib/pkgconfig
+ifneq ($(OPSYS),Darwin)
 	$(SED) -e "s@^prefix=.*@prefix=$(PREFIX)@" $(_ZLIB)/lib/pkgconfig/zlib.pc > $(STAGING)/$(_NAME)/lib/pkgconfig/zlib.pc
+endif
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $(PREFIX)/var/pkg/$(_NAME)
 endif
-do-clean:
-	$(MAKE) -C $(_WRKSRC) clean
-	rm -f build.log install.log
-	rm -rf $(STAGING)/$(_NAME)
-do-distclean:
-	$(MAKE) -C $(_WRKSRC) distclean
-	rm -f $(_WRKSRC)/configure.log config.log
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
-	rm -rf $(_WRKSRC) || true
+	rm -rf $(_WRKSRC)
+	rm -f build.log install.log config.log

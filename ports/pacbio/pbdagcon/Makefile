@@ -57,7 +57,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
      && find bin/pbdagcon \
              bin/dazcon   \
         > $@
-	@echo "# $(_REVISION)" >> $@ 
+	@echo "# $(_REVISION)" >> $@
 else
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME):
@@ -72,7 +72,7 @@ endif
 do-test:
 	$(MAKE) -C $(_WRKSRC)/build check
 do-clean:
-	$(MAKE) -C $(_WRKSRC)/build clean
+	$(MAKE) -C $(_WRKSRC)/build clean || rm -rf $(MAKE) -C $(_WRKSRC)/build
 do-distclean:
 	cd $(_WRKSRC) && $(GIT) clean -xdf
 do-flush:

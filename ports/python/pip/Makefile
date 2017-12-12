@@ -24,5 +24,8 @@ $(PREFIX)/var/pkg/$(_NAME): | do-fetch
              lib/python2.7/site-packages/pkg_resources \
              lib/python2.7/site-packages/setuptools*   \
              lib/python2.7/site-packages/wheel* | sort -r > $@
-	test -e lib/python2.7/site-packages/_markerlib && \
-        find lib/python2.7/site-packages/_markerlib >> $@ || true
+	find lib/python2.7/site-packages/_markerlib >> $@ || true
+do-clean: do-flush
+do-distclean: do-flush
+do-flush:
+	rm -f get-pip.py

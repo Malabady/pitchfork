@@ -48,8 +48,8 @@ $(PREFIX)/var/pkg/$(_NAME):
                  $(STAGING)/$(_NAME)/include \
                  $(STAGING)/$(_NAME)/lib/pkgconfig \
                  $(STAGING)/$(_NAME)/etc
-	test -d $(_SSLLIB)/pkgconfig && cp -aL $(_SSLLIB)/pkgconfig/libcrypto.pc $(STAGING)/$(_NAME)/lib/pkgconfig/ || true
-	test -d $(_SSLLIB)/pkgconfig && cp -aL $(_SSLLIB)/pkgconfig/*ssl.pc      $(STAGING)/$(_NAME)/lib/pkgconfig/ || true
+	cp -aL $(_SSLLIB)/pkgconfig/libcrypto.pc $(STAGING)/$(_NAME)/lib/pkgconfig/ || true
+	cp -aL $(_SSLLIB)/pkgconfig/*ssl.pc      $(STAGING)/$(_NAME)/lib/pkgconfig/ || true
 	#cp -aL $(_SSLLIB)/pkgconfig/libtls.pc    $(STAGING)/$(_NAME)/lib/pkgconfig/
 	cp -aL $(_SSLLIB)/libcrypto*             $(STAGING)/$(_NAME)/lib/
 	cp -aL $(_SSLLIB)/libssl*                $(STAGING)/$(_NAME)/lib/
@@ -60,12 +60,8 @@ $(PREFIX)/var/pkg/$(_NAME):
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
 endif
-do-clean:
-	$(MAKE) -C $(_WRKSRC) clean
-	rm -f build.log install.log
-	rm -rf $(STAGING)/$(_NAME)
-do-distclean:
-	$(MAKE) -C $(_WRKSRC) distclean
-	rm -f $(_WRKSRC)/config.log config.log
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
-	rm -rf $(_WRKSRC) || true
+	rm -rf $(_WRKSRC)
+	rm -f build.log install.log config.log

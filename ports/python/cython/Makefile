@@ -40,7 +40,8 @@ $(PREFIX)/var/pkg/$(_NAME):
 	rsync -aKx $(STAGING)/$(_NAME)/ $(PREFIX)/
 	cd $(STAGING)/$(_NAME) && find * ! -type d|grep -v '^$$'|sort -r > $@
 endif
-do-clean:
-	rm -rf $(STAGING)/$(_NAME)
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
+	rm -rf $(STAGING)/$(_NAME)
 	rm -rf $(_WRKSRC)

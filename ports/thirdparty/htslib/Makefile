@@ -39,7 +39,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 	cd $(_WRKSRC) && tar cf - */*.h | tar xf - -C $(PREFIX)/src/htslib/include/
 	cd $(_WRKSRC) && tar cf - *.a   | tar xf - -C $(PREFIX)/src/htslib/lib/
 	cd $(PREFIX)  && find src/htslib ! -type d > $@
-	@echo "# $(_REVISION)" >> $@ 
+	@echo "# $(_REVISION)" >> $@
 #this thing cannot be installed to prefix/lib or it will kill pysam/samtools
 else
 do-install: $(PREFIX)/var/pkg/$(_NAME)
@@ -51,9 +51,8 @@ $(PREFIX)/var/pkg/$(_NAME):
 	cd $(STAGING)/$(_NAME) && find src/htslib ! -type d > $@
 	@echo "# $(HAVE_HTSLIB)" >> $@
 endif
-do-clean:
-	$(MAKE) -C $(_WRKSRC) clean
-do-distclean:
-	cd $(_WRKSRC) && $(GIT) clean -xdf
-do-flash:
+do-clean: do-flush
+do-distclean: do-flush
+do-flush:
 	rm -rf $(_WRKSRC)
+	rm -f build.log install.log config.log

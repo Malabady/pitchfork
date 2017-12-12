@@ -46,7 +46,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
              bin/pbtestkit-service-runner \
              bin/smrt-db-tool \
         >> $@
-	@echo "# $(_REVISION)" >> $@ 
+	@echo "# $(_REVISION)" >> $@
 do-clean:
 	rm -rf $(_WRKSRC)/smrt-analysis/target
 do-distclean:

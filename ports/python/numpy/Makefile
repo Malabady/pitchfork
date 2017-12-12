@@ -32,9 +32,8 @@ $(PREFIX)/var/pkg/$(_NAME): | do-config
 	$(PIP) install --root $(STAGING)/$(_NAME) --no-deps $(_WRKSRC)/
 	rsync -aKx $(STAGING)/$(_NAME)/$(PREFIX)/ $(PREFIX)/
 	cd $(STAGING)/$(_NAME)$(PREFIX) && find * ! -type d|grep -v '^$$'|sort -r > $@
-do-clean:
-	rm -rf $(STAGING)/$(_NAME)
-do-distclean:
-	rm -f $(_WRKSRC)/site.cfg
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
+	rm -rf $(STAGING)/$(_NAME)
 	rm -rf $(_WRKSRC)

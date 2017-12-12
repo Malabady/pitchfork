@@ -16,7 +16,7 @@ do-build: | do-fetch
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rm -rf $(STAGING)/$(_NAME)
-	mkdir -p $(STAGING)/$(_NAME)/bin 
+	mkdir -p $(STAGING)/$(_NAME)/bin
 	mkdir -p $(STAGING)/$(_NAME)/lib/python2.7/site-packages
 	mkdir -p $(STAGING)/$(_NAME)/include
 	cd $(_WRKSRC)/src && tar cf - ssw_test pyssw.py | tar xf - -C $(STAGING)/$(_NAME)/bin/

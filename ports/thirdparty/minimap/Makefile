@@ -1,6 +1,6 @@
 include ../../../mk/pitchfork.mk
 
-# Local variables 
+# Local variables
 _NAME             = minimap
 _URL              = https://github.com/lh3/minimap/archive
 $(_NAME)_VERSION ?= 1cd6ae3bc7c7a6f9e7c03c0b7a93a12647bba244
@@ -27,10 +27,8 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rsync -avx $(_WRKSRC)/minimap $(PREFIX)/bin/ >& install.log
 	echo $(PREFIX)/bin/minimap > $(PREFIX)/var/pkg/$(_NAME)
 	echo "# $(_VERSION)" >> $(PREFIX)/var/pkg/$(_NAME)
-do-clean:
-	$(MAKE) -C $(_WRKSRC) clean
-	rm -f build.log install.log
-	rm -rf $(STAGING)/$(_NAME)
-do-distclean: | do-clean
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
-	rm -rf $(_WRKSRC) || true
+	rm -rf $(_WRKSRC) 
+	rm -f build.log install.log

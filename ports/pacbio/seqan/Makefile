@@ -20,7 +20,7 @@ do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-fetch
 	cd $(_WRKSRC) && tar cf - include|tar xf - -C $(PREFIX)/
 	cd $(_WRKSRC) && find include ! -type d > $@
-	@echo "# $(_REVISION)" >> $@ 
+	@echo "# $(_REVISION)" >> $@
 do-clean:
 do-distclean:
 	cd $(_WRKSRC) && $(GIT) clean -xdf

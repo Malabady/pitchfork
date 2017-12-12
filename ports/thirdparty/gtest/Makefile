@@ -19,5 +19,8 @@ $(PREFIX)/var/pkg/$(_NAME): | do-extract
 	mkdir -p $(PREFIX)/src
 	cp -a $(_WRKSRC) $(PREFIX)/src/gtest
 	find $(_WRKSRC) ! -type d|awk -F '$(_WRKSRC)/' '{print "src/gtest/"$$2}' > $@
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
-	rm -rf $(_WRKSRC) || true
+	rm -rf $(_WRKSRC)
+	rm -f build.log install.log

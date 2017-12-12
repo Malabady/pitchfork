@@ -13,7 +13,7 @@ $(_WRKSRC): | do-fetch
 	tar jxf $(_FILE) -C $(WORKDIR)
 ifeq ($(OPSYS),Darwin)
 	cat patch-01 | (cd $(_WRKSRC) && patch -p0)
-	$(SED) -i -e 's/-rdynamic//g' $(_WRKSRC)/Makefile $(_WRKSRC)/htslib-*/configure*
+	$(SED) -i -e 's/-rdynamic//g' $(_WRKSRC)/Makefile
 endif
 do-fetch: $(_FILE)
 $(_FILE):
@@ -21,9 +21,9 @@ $(_FILE):
 do-config: $(_WRKSRC)/config.log
 $(_WRKSRC)/config.log: | do-extract
 	(cd $(_WRKSRC) && \
-         CFLAGS="-I$(_WRKSRC)/htslib-1.3 $(CFLAGS)" ./configure --prefix=$(PREFIX) \
+         LDFLAGS="$(LDFLAGS) -lz -pthread" ./configure --prefix=$(PREFIX) \
                      --without-ncursesw \
-                     --with-htslib=$(_WRKSRC)/htslib-1.3.1) >& config.log || $(PFHOME)/bin/diewith config.log
+                     --with-htslib=$(PREFIX)/src/htslib) >& config.log || $(PFHOME)/bin/diewith config.log
 do-build: $(_WRKSRC)/samtools
 $(_WRKSRC)/samtools: | do-config
 	$(MAKE) CC=$(CC) CFLAGS="-g -Wall -O2 $(CFLAGS)" -C $(_WRKSRC) >& build.log || $(PFHOME)/bin/diewith build.log
@@ -44,18 +44,13 @@ $(PREFIX)/var/pkg/$(_NAME):
 	mkdir -p $(STAGING)/$(_NAME)/bin
 	mkdir -p $(STAGING)/$(_NAME)/share/man/man1
 	cp -aL $(HAVE_SAMTOOLS)/bin/samtools $(STAGING)/$(_NAME)/bin/
-	test -e $(HAVE_SAMTOOLS)/share/man/man1/samtools.1 && \
-        cp -aL $(HAVE_SAMTOOLS)/share/man/man1/samtools.1 $(STAGING)/$(_NAME)/share/man/man1/ || \
+	cp -aL $(HAVE_SAMTOOLS)/share/man/man1/samtools.1 $(STAGING)/$(_NAME)/share/man/man1/ || \
         true
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
 endif
-do-clean:
-	$(MAKE) -C $(_WRKSRC) clean
-	rm -f build.log install.log
-	rm -rf $(STAGING)/$(_NAME)
-do-distclean:
-	$(MAKE) -C $(_WRKSRC) distclean
-	rm -f $(_WRKSRC)/config.log config.log
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
-	rm -rf $(_WRKSRC) || true
+	rm -rf $(_WRKSRC)
+	rm -f build.log install.log config.log

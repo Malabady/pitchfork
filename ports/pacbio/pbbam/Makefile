@@ -50,7 +50,7 @@ $(PREFIX)/var/pkg/$(_NAME): | do-build
 do-clean:
 	$(MAKE) -C $(_WRKSRC)/build clean
 do-distclean:
-	test -d $(_WRKSRC) && cd $(_WRKSRC) && $(GIT) clean -xdf || true
+	cd $(_WRKSRC) && $(GIT) clean -xdf || true
 	rm -rf $(STAGING)/$(_NAME)
 do-flush:
 	rm -rf $(_WRKSRC)
@@ -71,4 +71,7 @@ $(PREFIX)/var/pkg/$(_NAME):
 	cd $(STAGING)/$(_NAME) && tar cf - bin lib include | tar xf - -C $(PREFIX)
 	cd $(STAGING)/$(_NAME) && find bin lib include ! -type d > $@
 	@echo "# $(HAVE_PBBAM)" >> $@
+do-clean:
+do-distclean:
+do-flush:
 endif

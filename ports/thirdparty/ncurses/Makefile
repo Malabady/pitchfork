@@ -31,21 +31,17 @@ $(_WRKSRC)/lib/libncurses.$(DYLIB): | do-config
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rm -rf $(STAGING)/$(_NAME)
+	$(SED) -i -e 's@^#! /bin/sh@#!/bin/sh@' $(_WRKSRC)/headers.sh
 	$(MAKE) -C $(_WRKSRC) \
             prefix=$(STAGING)/$(_NAME) \
             ticdir=$(STAGING)/$(_NAME)/share/terminfo \
             install >& install.log || $(PFHOME)/bin/diewith install.log
-	if [ -d $(STAGING)/$(_NAME)/lib64 ]; then \
-           ln -s libncurses.$(DYLIB) $(STAGING)/$(_NAME)/lib64/libcurses.$(DYLIB); \
-        elif [ -d $(STAGING)/$(_NAME)/lib ]; then \
-           ln -s libncurses.$(DYLIB) $(STAGING)/$(_NAME)/lib/libcurses.$(DYLIB); \
-        else \
-           exit 1; \
-        fi
 	mkdir -p $(STAGING)/$(_NAME)/lib/pkgconfig
 	$(SED) -e "s@^prefix=.*@prefix=$(PREFIX)@" ncurses.pc > $(STAGING)/$(_NAME)/lib/pkgconfig/ncurses.pc
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
+	ln -sfn libncurses.$(DYLIB) $(PREFIX)/lib/libcurses.$(DYLIB)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
+	echo lib/libcurses.$(DYLIB) >> $@
 else
 _NCURSES := $(shell ../../../bin/checkNCURSES $(HAVE_NCURSES))
 _NAME     = ncurses
@@ -69,12 +65,8 @@ $(PREFIX)/var/pkg/$(_NAME):
 	cd $(STAGING)/$(_NAME) && tar cf - * | tar xf - -C $(PREFIX)
 	find $(STAGING)/$(_NAME) ! -type d|awk -F '$(STAGING)/$(_NAME)/' '{print $$2}' > $@
 endif
-do-clean:
-	$(MAKE) -C $(_WRKSRC) clean
-	rm -f build.log install.log
-	rm -rf $(STAGING)/$(_NAME)
-do-distclean:
-	$(MAKE) -C $(_WRKSRC) distclean
-	rm -f $(_WRKSRC)/config.log config.log
+do-clean: do-flush
+do-distclean: do-flush
 do-flush:
-	rm -rf $(_WRKSRC) || true
+	rm -rf $(_WRKSRC)
+	rm -f build.log install.log config.log
