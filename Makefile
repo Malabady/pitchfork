@@ -82,7 +82,7 @@ pickleshare:      pip
 ptyprocess:       pip
 pycrypto:         pip
 pyparsing:        pip
-pysam:            pip zlib cython
+pysam:            pip zlib cython htslib
 python-dateutil:  pip
 pytz:             pip
 requests:         pip
