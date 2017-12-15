@@ -171,6 +171,10 @@ def parseargs(args):
                      type=str,
                      help='The name of the package.')
 
+    sub = subparsers.add_parser('short-branch',
+                                help = 'show branch name in short',
+                                description='''To provide short name of current branch or default''')
+
     return parser.parse_args()
 
 
@@ -453,16 +457,17 @@ def pitchfork(args):
                 else:
                     pass
         elif myargs['name']:
-            """ for None and '' """
-            if glob('ports/thirdparty/%s/Makefile' % myargs['name']):
-                out, _exit, _err = backticks('%s -C ports/thirdparty/%s do-clean' % (MAKE, myargs['name']))
-            elif glob('ports/python/%s/Makefile' % myargs['name']):
-                out, _exit, _err = backticks('%s -C ports/python/%s do-clean' % (MAKE, myargs['name']))
-            elif glob('ports/pacbio/%s/Makefile' % myargs['name']):
-                out, _exit, _err = backticks('%s -C ports/pacbio/%s do-clean' % (MAKE, myargs['name']))
+            if glob('%s/ports/thirdparty/%s/Makefile' % (_projhome, myargs['name'])):
+                _portpath = '%s/ports/thirdparty/%s' % (_projhome, myargs['name'])
+            elif glob('%s/ports/python/%s/Makefile' % (_projhome, myargs['name'])):
+                _portpath = '%s/ports/python/%s' % (_projhome, myargs['name'])
+            elif glob('%s/ports/pacbio/%s/Makefile' % (_projhome, myargs['name'])):
+                _portpath = '%s/ports/pacbio/%s' % (_projhome, myargs['name'])
             else:
                 raise Exception('[ERROR] package %s not found' % myargs['name'])
+            out, _exit, _err = backticks('%s -C %s do-clean' % (MAKE, _portpath))
         else:
+            """ for None and '' """
             raise Exception('[ERROR] no package specified')
         return
 
@@ -475,17 +480,32 @@ def pitchfork(args):
                 else:
                     pass
         elif myargs['name']:
-            """ for None and '' """
-            if glob('ports/thirdparty/%s/Makefile' % myargs['name']):
-                out, _exit, _err = backticks('%s -C ports/thirdparty/%s do-distclean' % (MAKE, myargs['name']))
-            elif glob('ports/python/%s/Makefile' % myargs['name']):
-                out, _exit, _err = backticks('%s -C ports/python/%s do-distclean' % (MAKE, myargs['name']))
-            elif glob('ports/pacbio/%s/Makefile' % myargs['name']):
-                out, _exit, _err = backticks('%s -C ports/pacbio/%s do-distclean' % (MAKE, myargs['name']))
+            if glob('%s/ports/thirdparty/%s/Makefile' % (_projhome, myargs['name'])):
+                _portpath = '%s/ports/thirdparty/%s' % (_projhome, myargs['name'])
+            elif glob('%s/ports/python/%s/Makefile' % (_projhome, myargs['name'])):
+                _portpath = '%s/ports/python/%s' % (_projhome, myargs['name'])
+            elif glob('%s/ports/pacbio/%s/Makefile' % (_projhome, myargs['name'])):
+                _portpath = '%s/ports/pacbio/%s' % (_projhome, myargs['name'])
             else:
                 raise Exception('[ERROR] package %s not found' % myargs['name'])
+            out, _exit, _err = backticks('%s -C %s do-distclean' % (MAKE, _portpath))
         else:
+            """ for None and '' """
             raise Exception('[ERROR] no package specified')
+        return
+
+    if args.subcommand == 'short-branch':
+        try:
+            with open('%s/.git/HEAD' % _projhome, 'r') as f:
+                lines = f.readlines()
+        except:
+            print('pitchfork')
+            return
+        line = lines[0]
+        if 'ref: refs/heads/' in line:
+            print(line.split('/')[-1].strip())
+        else:
+            print('archive')
         return
 
     raise Exception('Unknown subcommand: {!r}'.format(args.subcommand))
