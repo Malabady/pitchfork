@@ -46,7 +46,11 @@ $(_WRKSRC)/_build/cleric: | do-config
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rsync -ax $(_WRKSRC)/_build/cleric $(PREFIX)/bin/
-	@cd $(PREFIX) && find bin/cleric -type f > $@
+	rsync -ax $(_WRKSRC)/_build/fuse   $(PREFIX)/bin/
+	rsync -ax $(_WRKSRC)/_build/juliet $(PREFIX)/bin/
+	rsync -ax $(_WRKSRC)/scripts/minorvariant/julietflow $(PREFIX)/bin/
+	rsync -ax $(_WRKSRC)/scripts/minorvariant/mixdata    $(PREFIX)/bin/
+	@cd $(PREFIX) && find bin/{cleric,fuse,juliet,julietflow,mixdata} -type f > $@
 	@echo "# $(_REVISION)" >> $@
 do-clean:
 	$(MAKE) -C $(_WRKSRC)/_build clean || rm -rf $(_WRKSRC)/_build
