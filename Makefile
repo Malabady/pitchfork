@@ -124,6 +124,7 @@ damasker:     ccache
 dextractor:   ccache
 pbdagcon:     ccache dazzdb daligner pbbam blasr_libcpp gtest
 bam2fastx:    ccache pbbam htslib zlib boost cmake pbcopper
+minorseq:     ccache cmake pbcopper pbbam
 #
 pbcore:           pysam h5py
 pbh5tools:        h5py pbcore
@@ -404,6 +405,8 @@ pbcopper:
 pbsv:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 pbsvtools:
+	$(MAKE) -C ports/pacbio/$@ ${RULE}
+minorseq:
 	$(MAKE) -C ports/pacbio/$@ ${RULE}
 #
 pblaa:
