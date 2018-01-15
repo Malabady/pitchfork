@@ -22,7 +22,8 @@ else
 	echo "export   LD_LIBRARY_PATH=$(PREFIX)/lib:\$$LD_LIBRARY_PATH"  |sed -e 's/::*/:/g' > "$(PREFIX)/setup-env.sh"
 endif
 	echo "export PATH=$(PREFIX)/bin:\$$PATH"|sed -e 's/::*/:/g' >> "$(PREFIX)/setup-env.sh"
-	echo "unset PYTHONPATH"
+	echo "OLDPS1=\$$PS1" >> "$(PREFIX)/setup-env.sh"
+	echo "[[ \"\$$PS1\" ]] && PS1=\"pitchfork($$($(PFHOME)/bin/pitchfork short-branch)) \$$PS1\" || PS1=\($$($(PFHOME)/bin/pitchfork short-branch)\)" >> "$(PREFIX)/setup-env.sh"
 
 
 ifeq ($(OPSYS),Darwin)

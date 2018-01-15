@@ -4,10 +4,10 @@ include ../../../mk/pitchfork.mk
 include ../../../mk/chkfc.mk
 
 # Local variables
-_NAME   = OpenBLAS-0.2.18
+_NAME   = OpenBLAS-0.2.20
 _URL    = https://github.com/xianyi/OpenBLAS/archive
 _WRKSRC = $(WORKDIR)/$(_NAME)
-_FILE   = v0.2.18.tar.gz
+_FILE   = v0.2.20.tar.gz
 
 # Local works
 ifeq ($(origin HAVE_OPENBLAS),undefined)
