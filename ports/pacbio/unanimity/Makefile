@@ -49,7 +49,12 @@ $(_WRKSRC)/_build/ccs: | do-config
 do-install: $(PREFIX)/var/pkg/$(_NAME)
 $(PREFIX)/var/pkg/$(_NAME): | do-build
 	rsync -ax $(_WRKSRC)/_build/ccs $(PREFIX)/bin/
+	mkdir -p $(PREFIX)/chemistry-data-bundle/arrow
+	rsync -ax chemistry.xml $(PREFIX)/chemistry-data-bundle/
 	@echo bin/ccs > $@ 
+	@find $(PREFIX)/chemistry-data-bundle -type f >> $@
+	@echo export SMRT_CHEMISTRY_BUNDLE_DIR=$(PREFIX)/chemistry-data-bundle >> \
+		$(PREFIX)/setup-env.sh
 	     CMAKE_COMMAND=$(CMAKE) \
         Boost_INCLUDE_DIRS=$(BOOST_ROOT)/include \
               SWIG_COMMAND=$(shell . $(PREFIX)/setup-env.sh && which swig) \
