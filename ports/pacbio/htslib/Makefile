@@ -2,7 +2,7 @@ include ../../../mk/pitchfork.mk
 
 # Local variables
 _NAME             = htslib
-$(_NAME)_REPO    ?= git://github.com/PacificBiosciences/$(_NAME)
+$(_NAME)_REPO    ?= git://github.com/mhsieh/$(_NAME)
 _WRKSRC           = $(WORKDIR)/$(_NAME)
 #$(_NAME)_VERSION ?= ea846607f3ca7f49b3fb43df76f572d3f47cc6bb
 _REVISION         = $(shell cd $(_WRKSRC) && $(GIT) rev-parse --short $($(_NAME)_VERSION) || true)
